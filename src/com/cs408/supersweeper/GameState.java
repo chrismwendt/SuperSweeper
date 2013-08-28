@@ -47,6 +47,11 @@ public class GameState {
 		
 	}
 	
+	//TODO: so far only says if has mine or not.  needs to return state. 
+	public boolean getState(int x, int y){
+		return _grid[x][y].hasMine();
+	}
+	
 	public void drawState() {
 		for(int x = 0; x < _grid.length; x++) {
 			for(int y = 0; y < _grid[0].length; y++) {

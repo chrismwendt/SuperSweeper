@@ -3,23 +3,37 @@ package com.cs408.supersweeper;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JMenuBar;
+
 import java.io.IOException;
 
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
-public class GameFrame
+public class GameFrame implements ActionListener
 {
 
    private JFrame frame;
+   private JMenuItem mntmNewGame;
+   private JMenuItem mntmLoginlogout;
+   private JMenuItem mntmMainMenu;
+   private JMenuItem mntmExit;
 
    /**
     * Launch the application.
     */
    public static void main(String[] args)
    {
+	   
       EventQueue.invokeLater(new Runnable()
       {
          public void run()
@@ -69,17 +83,37 @@ public class GameFrame
       JMenu mnFile = new JMenu("File");
       menuBar.add(mnFile);
       
-      JMenuItem mntmNewGame = new JMenuItem("New Game");
+      mntmNewGame = new JMenuItem("New Game");
       mnFile.add(mntmNewGame);
+      mntmNewGame.addActionListener(this);
       
-      JMenuItem mntmLoginlogout = new JMenuItem("Login/Logout");
+      mntmLoginlogout = new JMenuItem("Login/Logout");
       mnFile.add(mntmLoginlogout);
+      mntmLoginlogout.addActionListener(this);
       
-      JMenuItem mntmMainMenu = new JMenuItem("Main Menu");
+      mntmMainMenu = new JMenuItem("Main Menu");
       mnFile.add(mntmMainMenu);
+      mntmMainMenu.addActionListener(this);
       
-      JMenuItem mntmExit = new JMenuItem("Exit");
+      mntmExit = new JMenuItem("Exit");
       mnFile.add(mntmExit);
+      mntmExit.addActionListener(this);
    }
+
+public void actionPerformed(ActionEvent e) {
+	Object action = e.getSource();
+	
+	//TODO: add implementation to menu items
+	if(action == mntmNewGame){
+		
+	} else if(action == mntmLoginlogout){
+		
+	} else if(action == mntmMainMenu){
+		
+	} else if(action == mntmExit){
+		frame.dispose();
+		System.exit(0);
+	}
+}
  
 }

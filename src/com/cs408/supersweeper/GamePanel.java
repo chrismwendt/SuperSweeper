@@ -1,15 +1,19 @@
 package com.cs408.supersweeper;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.Properties;
 
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
 	private GameState _gs;
 	private Properties _prop = new Properties();
+	private int gridHeight;
+	private int gridWidth;
 	
 	/** Constructor */
 	public GamePanel(String propFileName) throws IOException {
@@ -61,6 +65,31 @@ public class GamePanel extends JPanel {
 			System.exit(-1);
 		}
 	}
-	
+
 	/** Listeners */
+	public void mouseClicked(MouseEvent e) {
+		int x = (e.getX())/gridWidth;
+		int y = (e.getY())/gridHeight;
+		boolean clicked = _gs.getState(x, y);
+		
+		if(e.isMetaDown() && clicked == true){
+			//flag
+		} else if(clicked == true ){
+			//mine go boom
+		} else if(clicked == false){
+			//reveal nothing or number
+		}
+	}
+	public void mouseEntered(MouseEvent e) {
+		
+	}
+	public void mouseExited(MouseEvent e) {
+		
+	}
+	public void mousePressed(MouseEvent e) {
+		
+	}
+	public void mouseReleased(MouseEvent e) {
+		
+	}
 }
