@@ -19,10 +19,47 @@ public class GridUnit {
 	public GridUnit(int numSides, Point coordinate) {
 		this._numSides = numSides;
 		this._coordinate = coordinate;
-		//_bitmap = (getbitmap from numSides)
+		//TODO _bitmap = (getbitmap from numSides)
 	}
 	
-	public void setBomb() {
-		this._isMine = true;
+	public void draw() {
+		
+	}
+	
+	/** Getters */
+	public boolean hasMine() {
+		return this._isMine;
+	}
+	public int getNearbyMineCount() {
+		return this._nearbyMines;
+	}
+	public State getState() {
+		return this._state;
+	}
+	public Point getCoordinate() {
+		return this._coordinate;
+	}
+	
+	/** Setters */
+	public void setHasMine(boolean hasMine) {
+		this._isMine = hasMine;
+	}
+	public void setState (State newState) {
+		this._state = newState;
+		switch(newState) {
+		default:
+		case UNCHECKED:
+			//TODO: Change bitmap
+			break;
+		case CHECKED:
+			//TODO: change bitmap
+			break;
+		case FLAGGED:
+			//TODO: change bitmap
+			break;
+		}
+	}
+	public void setCoordinate (Point newLocation) {
+		this._coordinate = newLocation;
 	}
 }

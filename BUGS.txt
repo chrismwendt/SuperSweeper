@@ -1,0 +1,6 @@
+1) Didn't check if a grid already had a bomb when assigning them, so there could be fewer bombs than there is suppose to be (sets bomb on same unit twice)
+2) If level assignment has more bombs than squares, it gets caught in infinite loop
+3) MULTIPLE  - structure the level properties file wrong
+4) If either gridHeight or gridWidth are 0, the game wouldn't work (throws error)
+5) If gridNumSides is not 3, 4, or 6 throw an error
+6) All error handling (throws/try-catches) could be bugged

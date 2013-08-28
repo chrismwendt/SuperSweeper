@@ -25,6 +25,7 @@ public class GameState {
 		if(time == 0) { _isTimed = false; }
 		this._grid = new GridUnit[gridWidth][gridHeight];
 		
+		
 		//populate grid with blank tiles
 		for(int x = 0; x < gridWidth; x ++) {
 			for(int y = 0; y < gridHeight; y++) {
@@ -32,10 +33,25 @@ public class GameState {
 			}
 		}
 		
-		//populat grid with bombs!
+		
+		//populate grid with bombs!
 		Random r = new Random();
 		for(int i = 0; i < numMines; i ++) {
-			_grid[r.nextInt(gridWidth)][r.nextInt(gridHeight)].setBomb();
+			GridUnit tmp = _grid[r.nextInt(gridWidth)][r.nextInt(gridHeight)];
+			if(!tmp.hasMine())
+				tmp.setHasMine(true);
+			else
+				i--;
+		}
+		
+		
+	}
+	
+	public void drawState() {
+		for(int x = 0; x < _grid.length; x++) {
+			for(int y = 0; y < _grid[0].length; y++) {
+				_grid[x][y].draw();
+			}
 		}
 	}
 }

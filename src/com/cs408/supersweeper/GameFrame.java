@@ -5,8 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import java.awt.Canvas;
+import java.io.IOException;
+
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 
@@ -14,7 +14,6 @@ public class GameFrame
 {
 
    private JFrame frame;
-   private  JPanel gamePanel;
 
    /**
     * Launch the application.
@@ -29,7 +28,7 @@ public class GameFrame
             {
                GameFrame window = new GameFrame();
                window.frame.setVisible(true);
-               GameState gs = new GameState(window.getGamePanel());
+               
             }
             catch (Exception e)
             {
@@ -43,24 +42,26 @@ public class GameFrame
 
    /**
     * Create the application.
+ * @throws IOException 
     */
-   public GameFrame()
+   public GameFrame() throws IOException
    {
       initialize();
    }
 
    /**
     * Initialize the contents of the frame.
+ * @throws IOException 
     */
-   private void initialize()
+   private void initialize() throws IOException
    {
       frame = new JFrame();
       frame.setBounds(100, 100, 450, 300);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.getContentPane().setLayout(new BorderLayout(0, 0));
       
-      gamePanel = new JPanel();
-      frame.getContentPane().add(gamePanel, BorderLayout.CENTER);
+      GamePanel gp = new GamePanel("001.properties"); //load first level right away...
+      frame.getContentPane().add(gp, BorderLayout.CENTER);
       
       JMenuBar menuBar = new JMenuBar();
       frame.setJMenuBar(menuBar);
@@ -79,10 +80,6 @@ public class GameFrame
       
       JMenuItem mntmExit = new JMenuItem("Exit");
       mnFile.add(mntmExit);
-   }
-
-   private JPanel getGamePanel() {
-	   return this.gamePanel;
    }
  
 }
