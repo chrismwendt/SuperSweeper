@@ -4,3 +4,4 @@
 4) If either gridHeight or gridWidth are 0, the game wouldn't work (throws error)
 5) If gridNumSides is not 3, 4, or 6 throw an error
 6) All error handling (throws/try-catches) could be bugged
+7) Didnt add properties files to build path

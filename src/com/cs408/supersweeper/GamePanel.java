@@ -3,6 +3,7 @@ package com.cs408.supersweeper;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import javax.swing.JPanel;
@@ -18,7 +19,7 @@ public class GamePanel extends JPanel implements MouseListener {
 	/** Constructor */
 	public GamePanel(String propFileName) throws IOException {
 		//Fetch the specified properties file (throws ioexception if its not there)
-		this._prop.load(getClass().getClassLoader().getResourceAsStream("level_properties/" + propFileName));
+		this._prop.load(this.getClass().getResourceAsStream("/" + propFileName));
 		validate(_prop);
 		
 		//Make a new GameState from the specified properties file
