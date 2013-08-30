@@ -1,10 +1,10 @@
 package com.cs408.supersweeper;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
-import java.util.ArrayList;
+import java.awt.image.BufferedImage;
 import java.util.Random;
-
-import javax.swing.JPanel;
 
 public class GameState {
 
@@ -52,10 +52,15 @@ public class GameState {
 		return _grid[x][y].hasMine();
 	}
 	
-	public void drawState() {
+	public void drawState(Graphics g) {
+	    BufferedImage unit = new BufferedImage(_grid[0][0].bitmap.getWidth(), _grid[0][0].bitmap.getHeight(), BufferedImage.TYPE_INT_ARGB);
+	    Graphics unit_graphics = unit.getGraphics();
 		for(int x = 0; x < _grid.length; x++) {
 			for(int y = 0; y < _grid[0].length; y++) {
-				_grid[x][y].draw();
+			    unit_graphics.setColor(Color.WHITE);
+			    unit_graphics.fillRect(0, 0, unit.getWidth(), unit.getHeight());
+				_grid[x][y].draw(unit_graphics);
+				g.drawImage(unit, x * unit.getWidth(), y * unit.getHeight(), null);
 			}
 		}
 	}

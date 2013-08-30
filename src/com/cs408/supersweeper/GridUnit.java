@@ -1,7 +1,12 @@
 package com.cs408.supersweeper;
 
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class GridUnit {
 
@@ -11,7 +16,7 @@ public class GridUnit {
 	private boolean _isMine = false;
 	private int _nearbyMines = 0;
 	private State _state = State.UNCHECKED;
-	private BufferedImage _bitmap; 
+	public BufferedImage bitmap; 
 	private Point _coordinate;
 	private int _numSides;
 	
@@ -19,11 +24,15 @@ public class GridUnit {
 	public GridUnit(int numSides, Point coordinate) {
 		this._numSides = numSides;
 		this._coordinate = coordinate;
+		this.bitmap = null;
+		try {
+		    this.bitmap = ImageIO.read(new File("images/grid_unit.png"));
+		} catch (IOException e) {}
 		//TODO _bitmap = (getbitmap from numSides)
 	}
 	
-	public void draw() {
-		
+	public void draw(Graphics g) {
+		g.drawImage(bitmap, 0, 0, null);
 	}
 	
 	/** Getters */

@@ -1,9 +1,9 @@
 package com.cs408.supersweeper;
 
+import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 import javax.swing.JPanel;
@@ -30,9 +30,6 @@ public class GamePanel extends JPanel implements MouseListener {
 				Integer.parseInt(_prop.getProperty("gridWidth")),
 				Integer.parseInt(_prop.getProperty("gridNumSides"))
 				);
-		
-		//Draw the initial board
-		_gs.drawState();
 	}
  	
 	
@@ -65,6 +62,10 @@ public class GamePanel extends JPanel implements MouseListener {
 			System.err.println("Invalid level properties file. Invalid gridNumSides defined, must be 3, 4, or 6.");
 			System.exit(-1);
 		}
+	}
+	
+	public void paint(Graphics g) {
+	    _gs.drawState(g);
 	}
 
 	/** Listeners */
