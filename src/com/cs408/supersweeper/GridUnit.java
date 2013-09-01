@@ -8,67 +8,174 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class GridUnit {
+public class GridUnit
+{
 
-	public enum State {CHECKED, UNCHECKED, FLAGGED;}
+   public enum State
+   {
+      CHECKED, UNCHECKED, FLAGGED;
+   }
 
-	
-	private boolean _isMine = false;
-	private int _nearbyMines = 0;
-	private State _state = State.UNCHECKED;
-	public BufferedImage bitmap; 
-	private Point _coordinate;
-	private int _numSides;
-	
-	/** Constructor */
-	public GridUnit(int numSides, Point coordinate) {
-		this._numSides = numSides;
-		this._coordinate = coordinate;
-		this.bitmap = null;
-		try {
-		    this.bitmap = ImageIO.read(new File("images/grid_unit.png"));
-		} catch (IOException e) {}
-		//TODO _bitmap = (getbitmap from numSides)
-	}
-	
-	public void draw(Graphics g) {
-		g.drawImage(bitmap, 0, 0, null);
-	}
-	
-	/** Getters */
-	public boolean hasMine() {
-		return this._isMine;
-	}
-	public int getNearbyMineCount() {
-		return this._nearbyMines;
-	}
-	public State getState() {
-		return this._state;
-	}
-	public Point getCoordinate() {
-		return this._coordinate;
-	}
-	
-	/** Setters */
-	public void setHasMine(boolean hasMine) {
-		this._isMine = hasMine;
-	}
-	public void setState (State newState) {
-		this._state = newState;
-		switch(newState) {
-		default:
-		case UNCHECKED:
-			//TODO: Change bitmap
-			break;
-		case CHECKED:
-			//TODO: change bitmap
-			break;
-		case FLAGGED:
-			//TODO: change bitmap
-			break;
-		}
-	}
-	public void setCoordinate (Point newLocation) {
-		this._coordinate = newLocation;
-	}
+   private boolean _isMine = false;
+   private int _nearbyMines = 0;
+   private State _state = State.UNCHECKED;
+   private BufferedImage bitmap;
+   private Point _coordinate;
+   private int _numSides;
+
+   /** Constructor */
+   public GridUnit(int numSides, Point coordinate)
+   {
+      this._numSides = numSides;
+      this._coordinate = coordinate;
+      this.bitmap = null;
+      this.setUnchecked();
+      // TODO _bitmap = (getbitmap from numSides)
+   }
+
+   public void draw(Graphics g)
+   {
+      g.drawImage(bitmap, 0, 0, null);
+   }
+
+   /** Getters */
+   public boolean hasMine()
+   {
+      return this._isMine;
+   }
+
+   public int getNearbyMineCount()
+   {
+      return this._nearbyMines;
+   }
+
+   public State getState()
+   {
+      return this._state;
+   }
+
+   public Point getCoordinate()
+   {
+      return this._coordinate;
+   }
+   
+   public BufferedImage getBitmap()
+   {
+      return this.bitmap;
+   }
+
+   /** Setters */
+   public void setState(State newState)
+   {
+      this._state = newState;
+      switch (newState)
+      {
+      default:
+      case UNCHECKED:
+         // TODO: Change bitmap
+         break;
+      case CHECKED:
+         // TODO: change bitmap
+         break;
+      case FLAGGED:
+         // TODO: change bitmap
+         break;
+      }
+   }
+
+   public void setCoordinate(Point newLocation)
+   {
+      this._coordinate = newLocation;
+   }
+
+   public void setHasMine(boolean hasMine)
+   {
+      this._isMine = hasMine;
+   }
+   
+   public void setMine()
+   {
+      this.setImageBitmap("images/grid_unit_mine.png");
+   }
+   
+   public void setChecked()
+   {
+      this.setState(State.CHECKED);
+      this.setImageBitmap("images/grid_unit_click.png");
+   }
+   
+   public void setEmpty()
+   {
+      this.setImageBitmap("images/grid_unit_empty.png");
+   }
+   
+   public void setFlagged()
+   {
+      this.setState(State.FLAGGED);
+      this.setImageBitmap("images/grid_unit_flag.png");
+   }
+   
+   public void setUnchecked()
+   {
+      this.setState(State.UNCHECKED);
+      this.setImageBitmap("images/grid_unit.png");
+   }
+   
+   public void setHovered()
+   {
+      this.setImageBitmap("images/grid_unit_hover.png");
+   }
+   
+   public void set1()
+   {
+      this.setImageBitmap("images/grid_unit_1.png");
+   }
+
+   public void set2()
+   {
+      this.setImageBitmap("images/grid_unit_2.png");
+   }
+
+   public void set3()
+   {
+      this.setImageBitmap("images/grid_unit_3.png");
+   }
+
+   public void set4()
+   {
+      this.setImageBitmap("images/grid_unit_4.png");
+   }
+
+   public void set5()
+   {
+      this.setImageBitmap("images/grid_unit_5.png");
+   }
+
+   public void set6()
+   {
+      this.setImageBitmap("images/grid_unit_6.png");
+   }
+
+   public void set7()
+   {
+      this.setImageBitmap("images/grid_unit_7.png");
+   }
+
+   public void set8()
+   {
+      this.setImageBitmap("images/grid_unit_8.png");
+   }
+
+   /** Helpers **/
+   public void setImageBitmap(String fileName)
+   {
+      try
+      {
+         this.bitmap = ImageIO.read(new File(fileName));
+      }
+      catch (IOException e)
+      {
+         e.printStackTrace();
+      }
+   }
 }
