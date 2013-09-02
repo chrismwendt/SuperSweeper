@@ -17,6 +17,9 @@ public class GameState
    private int _numOfFlags = 0;
    private double _score = 0;
    private boolean _isTimed = true;
+   private int _gridWidth;
+   private int _gridHeight;
+   private int _gridNumSides;
 
    /** Constructors */
    public GameState(double time, int numMines, int gridWidth, int gridHeight,
@@ -24,11 +27,14 @@ public class GameState
    {
       this._time = time;
       this._numMines = numMines;
+      this._gridHeight = gridHeight;
+      this._gridWidth = gridWidth;
+      this._gridNumSides = gridNumSides;
       if (time == 0)
       {
          _isTimed = false;
       }
-      this.resetGrid(numMines, gridWidth, gridHeight, gridNumSides);
+      this.resetGrid();
 
    }
 
@@ -37,27 +43,55 @@ public class GameState
    {
       return _grid[x][y].hasMine();
    }
-
-   public void resetGrid(int numMines, int gridWidth, int gridHeight,
-         int gridNumSides)
+   
+   public GridUnit getGridUnit(int x, int y)
    {
-      this._grid = new GridUnit[gridWidth][gridHeight];
+      return this._grid[x][y];
+   }
+   
+   public void exposeAllMines()
+   {
+      for (int x = 0; x < _grid.length; x++)
+      {
+         for (int y = 0; y < _grid[0].length; y++)
+         {
+            if(_grid[x][y].hasMine())
+               _grid[x][y].setMine();
+         }
+      }      
+   }
+
+   public void resetGrid()
+   {
+      this._grid = new GridUnit[_gridWidth][_gridHeight];
 
       // populate grid with blank tiles
-      for (int x = 0; x < gridWidth; x++)
+      for (int x = 0; x < _gridWidth; x++)
       {
-         for (int y = 0; y < gridHeight; y++)
+         for (int y = 0; y < _gridHeight; y++)
          {
-            _grid[x][y] = new GridUnit(gridNumSides, new Point(x, y));
+            _grid[x][y] = new GridUnit(_gridNumSides, new Point(x, y));
          }
       }
-
+   }
+   
+   public void populateMines(int x, int y)
+   {
       // populate grid with bombs!
       // TODO populate bombs after user first clicks
       Random r = new Random();
-      for (int i = 0; i < numMines; i++)
+      for (int i = 0; i < _numMines; i++)
       {
-         GridUnit tmp = _grid[r.nextInt(gridWidth)][r.nextInt(gridHeight)];
+         int randX = r.nextInt(_gridWidth);
+         int randY = r.nextInt(_gridHeight);
+         
+         if(randX == x && randY == y)
+         {
+            i--;
+            continue;
+         }
+         
+         GridUnit tmp = _grid[randX][randY];
          if (!tmp.hasMine())
             tmp.setHasMine(true);
          else

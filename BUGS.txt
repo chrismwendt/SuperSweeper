@@ -5,3 +5,4 @@
 5) If gridNumSides is not 3, 4, or 6 throw an error
 6) All error handling (throws/try-catches) could be bugged
 7) Didnt add properties files to build path
+8) PopulateMines --> after check if firstClick, no i-- before continue

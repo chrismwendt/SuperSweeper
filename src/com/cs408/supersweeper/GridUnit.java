@@ -126,45 +126,11 @@ public class GridUnit
       this.setImageBitmap("images/grid_unit_hover.png");
    }
    
-   public void set1()
+   public void setNumber(int num)
    {
-      this.setImageBitmap("images/grid_unit_1.png");
+      this.setImageBitmap("images/grid_unit_" + num + ".png");
    }
 
-   public void set2()
-   {
-      this.setImageBitmap("images/grid_unit_2.png");
-   }
-
-   public void set3()
-   {
-      this.setImageBitmap("images/grid_unit_3.png");
-   }
-
-   public void set4()
-   {
-      this.setImageBitmap("images/grid_unit_4.png");
-   }
-
-   public void set5()
-   {
-      this.setImageBitmap("images/grid_unit_5.png");
-   }
-
-   public void set6()
-   {
-      this.setImageBitmap("images/grid_unit_6.png");
-   }
-
-   public void set7()
-   {
-      this.setImageBitmap("images/grid_unit_7.png");
-   }
-
-   public void set8()
-   {
-      this.setImageBitmap("images/grid_unit_8.png");
-   }
 
    /** Helpers **/
    public void setImageBitmap(String fileName)
