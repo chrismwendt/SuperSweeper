@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.Properties;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -21,9 +22,10 @@ public class GamePanel extends JPanel implements MouseListener
    private int gridWidth;
    private GridUnit tempUnit = new GridUnit(4, new Point(0, 0));
    private boolean _firstClick = true;
+   private JLabel statusLabel;
 
    /** Constructor */
-   public GamePanel(String propFileName) throws IOException
+   public GamePanel(String propFileName, JLabel label) throws IOException
    {
       // Fetch the specified properties file (throws ioexception if its not
       // there)
@@ -44,9 +46,12 @@ public class GamePanel extends JPanel implements MouseListener
       int w = _gs.getGridUnit(0, 0).getBitmap().getWidth();
       int h = _gs.getGridUnit(0, 0).getBitmap().getHeight();
       setPreferredSize(new Dimension(_gs.gridWidth * w, _gs.gridHeight * h));
+
+      this.statusLabel = label;
+      updateStatusLabel();
    }
 
-   private void validate(Properties _prop)
+private void validate(Properties _prop)
    {
       // this function makes sure the properties file specified is valid
       double time = Double.parseDouble(_prop.getProperty("time"));
@@ -85,6 +90,10 @@ public class GamePanel extends JPanel implements MouseListener
          System.exit(-1);
       }
    }
+
+	private void updateStatusLabel() {
+		statusLabel.setText("Flags: "+_gs.getFlagCount());
+	}
 
    public void paint(Graphics g)
    {
@@ -127,6 +136,7 @@ public class GamePanel extends JPanel implements MouseListener
       }
 
       this.paint(this.getGraphics());
+      updateStatusLabel();
 
    }
 
@@ -152,6 +162,7 @@ public class GamePanel extends JPanel implements MouseListener
 
       gridUnit.setChecked();
       this.paint(this.getGraphics());
+      updateStatusLabel();
 
    }
 
@@ -167,6 +178,7 @@ public class GamePanel extends JPanel implements MouseListener
 
       gridUnit.setUnchecked();
       this.paint(this.getGraphics());
+      updateStatusLabel();
 
    }
 }

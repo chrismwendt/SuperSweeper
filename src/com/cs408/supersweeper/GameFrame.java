@@ -1,12 +1,14 @@
 package com.cs408.supersweeper;
 
 import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -65,9 +67,15 @@ public class GameFrame implements ActionListener
       frame.setBounds(100, 100, 450, 300);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.getContentPane().setLayout(new GridBagLayout());
+      GridBagConstraints c = new GridBagConstraints();
       
-      GamePanel gp = new GamePanel("001.properties"); //load first level right away...
-      frame.getContentPane().add(gp);
+      JLabel statusLabel = new JLabel();
+      c.gridy = 0;
+      frame.getContentPane().add(statusLabel, c);
+      
+      GamePanel gp = new GamePanel("001.properties", statusLabel); //load first level right away...
+      c.gridy = 1;
+      frame.getContentPane().add(gp, c);
       
       JMenuBar menuBar = new JMenuBar();
       frame.setJMenuBar(menuBar);

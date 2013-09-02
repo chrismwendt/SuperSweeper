@@ -179,4 +179,18 @@ public class GameState
          }
       }
    }
+
+   public int getFlagCount() {
+	   int count = 0;
+	   for (int i = 0; i < gridWidth; i++)
+	      {
+	         for (int j = 0; j < gridHeight; j++)
+	         {
+	            if (_grid[i][j].getState() == GridUnit.State.FLAGGED) {
+	            	count++;
+	            }
+	         }
+	      }
+	   return count;
+   }
 }
