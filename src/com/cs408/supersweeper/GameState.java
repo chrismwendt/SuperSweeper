@@ -97,6 +97,69 @@ public class GameState
          else
             i--;
       }
+      
+      //populate gridunit nearby mines
+      for (int i = 0; i < _gridWidth; i++)
+      {
+         for (int j = 0; j < _gridHeight; j++)
+         {
+            _grid[i][j].setNearbyMines(this.countNumberOfMines(_grid[i][j]));
+         }
+      }
+   }
+   
+   private int countNumberOfMines(GridUnit unit)
+   {
+      int numMines = 0;
+      int x = (int) unit.getCoordinate().getX();
+      int y = (int) unit.getCoordinate().getY();
+      
+      if(unit.hasMine())
+         return -1;
+      
+      for (int X = -1; X < 2; X++)
+      {
+         for (int Y = -1; Y < 2; Y++)
+         {
+            if(X==0 && Y==0)
+               continue;
+            try
+            {
+               if (_grid[x + X][y + Y].hasMine())
+                  numMines++;
+               unit.addAdjacenctUnit(new Point(x + X, y + Y));
+            }
+            catch (Exception e)
+            {
+               // ignore dis bish
+               // I am ripe for bugs
+            }
+         }
+      }
+      return numMines;
+   }
+   
+   public void exposeNumber(GridUnit unit)
+   {
+      if(unit.getNearbyMineCount() > 0)
+      {
+         unit.setNumber(unit.getNearbyMineCount());
+         return;
+      }
+      else
+         unit.setEmpty();
+      
+      
+      for(Point u : unit.getAdjacentUnits())
+      {
+         System.out.println(u + " | " + unit.getNearbyMineCount());
+         int x = (int) u.getX();
+         int y = (int) u.getY();
+         
+         if(_grid[x][y].getState() != GridUnit.State.CHECKED)
+            exposeNumber(_grid[x][y]);
+         
+      }
    }
 
    public void drawState(Graphics g)

@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -22,6 +23,7 @@ public class GridUnit
    private BufferedImage bitmap;
    private Point _coordinate;
    private int _numSides;
+   private ArrayList<Point> _adjacentUnits = new ArrayList<Point>();
 
    /** Constructor */
    public GridUnit(int numSides, Point coordinate)
@@ -63,6 +65,11 @@ public class GridUnit
    {
       return this.bitmap;
    }
+   
+   public ArrayList<Point> getAdjacentUnits()
+   {
+      return this._adjacentUnits;
+   }
 
    /** Setters */
    public void setState(State newState)
@@ -81,6 +88,11 @@ public class GridUnit
          // TODO: change bitmap
          break;
       }
+   }
+   
+   public void setNearbyMines(int numMines)
+   {
+      this._nearbyMines = numMines;
    }
 
    public void setCoordinate(Point newLocation)
@@ -107,6 +119,7 @@ public class GridUnit
    public void setEmpty()
    {
       this.setImageBitmap("images/grid_unit_empty.png");
+      this.setState(State.CHECKED);
    }
    
    public void setFlagged()
@@ -129,6 +142,7 @@ public class GridUnit
    public void setNumber(int num)
    {
       this.setImageBitmap("images/grid_unit_" + num + ".png");
+      this.setState(State.CHECKED);
    }
 
 
@@ -143,5 +157,11 @@ public class GridUnit
       {
          e.printStackTrace();
       }
+   }
+
+   public void addAdjacenctUnit(Point point)
+   {
+      this._adjacentUnits.add(point);
+      
    }
 }
