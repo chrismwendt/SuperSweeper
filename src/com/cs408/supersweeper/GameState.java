@@ -152,7 +152,7 @@ public class GameState
       
       for(Point u : unit.getAdjacentUnits())
       {
-         System.out.println(u + " | " + unit.getNearbyMineCount());
+         //System.out.println(u + " | " + unit.getNearbyMineCount());
          int x = (int) u.getX();
          int y = (int) u.getY();
          

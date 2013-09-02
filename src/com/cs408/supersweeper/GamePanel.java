@@ -105,14 +105,14 @@ private void validate(Properties _prop)
    {
       int x = (e.getX()) / (tempUnit.getBitmap().getWidth());
       int y = (e.getY()) / (tempUnit.getBitmap().getHeight());
-      System.out.println("X: " + x + " Y: " + y + " | e.X: " + e.getX()
-            + " e.Y: " + e.getY());
+//      System.out.println("X: " + x + " Y: " + y + " | e.X: " + e.getX()
+//            + " e.Y: " + e.getY());
 
       if (x >= this.gridWidth || y >= this.gridHeight)
          return;
 
-      boolean clicked = _gs.getState(x, y);
       GridUnit gridUnit = _gs.getGridUnit(x, y);
+      boolean isMine = gridUnit.hasMine();
 
       if(_firstClick && !SwingUtilities.isRightMouseButton(e))
       {
@@ -122,17 +122,27 @@ private void validate(Properties _prop)
       
       if (SwingUtilities.isRightMouseButton(e))
       {
-         // flag
-         gridUnit.setFlagged();
+         if(gridUnit.getState() == GridUnit.State.UNCHECKED)
+         {
+            // flag
+            System.out.println(gridUnit.getState());
+            gridUnit.setFlagged();
+         }
+         else if(gridUnit.getState() == GridUnit.State.FLAGGED)
+            gridUnit.setUnchecked();
+         else
+            _gs.exposeNumber(gridUnit);
       }
-      else if (clicked == true)
+      else if(gridUnit.getState() == GridUnit.State.FLAGGED)
+         gridUnit.setFlagged();
+      else if (isMine == true)
       {
          // mine go boom
          _gs.exposeAllMines();
       }
-      else if (clicked == false)
+      else if (isMine == false)
       {
-         _gs.exposeNumber(gridUnit);
+            _gs.exposeNumber(gridUnit);
       }
 
       this.paint(this.getGraphics());
@@ -160,7 +170,7 @@ private void validate(Properties _prop)
          return;
       GridUnit gridUnit = _gs.getGridUnit(x, y);
 
-      gridUnit.setChecked();
+      gridUnit.setCheckedNoState();
       this.paint(this.getGraphics());
       updateStatusLabel();
 
@@ -176,7 +186,7 @@ private void validate(Properties _prop)
          return;
       GridUnit gridUnit = _gs.getGridUnit(x, y);
 
-      gridUnit.setUnchecked();
+      gridUnit.setUncheckedNoState();
       this.paint(this.getGraphics());
       updateStatusLabel();
 

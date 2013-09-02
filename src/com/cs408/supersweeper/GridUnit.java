@@ -75,19 +75,19 @@ public class GridUnit
    public void setState(State newState)
    {
       this._state = newState;
-      switch (newState)
-      {
-      default:
-      case UNCHECKED:
-         // TODO: Change bitmap
-         break;
-      case CHECKED:
-         // TODO: change bitmap
-         break;
-      case FLAGGED:
-         // TODO: change bitmap
-         break;
-      }
+//      switch (newState)
+//      {
+//      default:
+//      case UNCHECKED:
+//         // TODO: Change bitmap
+//         break;
+//      case CHECKED:
+//         // TODO: change bitmap
+//         break;
+//      case FLAGGED:
+//         // TODO: change bitmap
+//         break;
+//      }
    }
    
    public void setNearbyMines(int numMines)
@@ -116,6 +116,11 @@ public class GridUnit
       this.setImageBitmap("images/grid_unit_click.png");
    }
    
+   public void setCheckedNoState()
+   {
+      this.setImageBitmap("images/grid_unit_click.png");
+   }
+   
    public void setEmpty()
    {
       this.setImageBitmap("images/grid_unit_empty.png");
@@ -131,6 +136,11 @@ public class GridUnit
    public void setUnchecked()
    {
       this.setState(State.UNCHECKED);
+      this.setImageBitmap("images/grid_unit.png");
+   }
+   
+   public void setUncheckedNoState()
+   {
       this.setImageBitmap("images/grid_unit.png");
    }
    
