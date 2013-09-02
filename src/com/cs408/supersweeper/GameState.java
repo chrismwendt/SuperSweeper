@@ -99,9 +99,9 @@ public class GameState
       }
       
       //populate gridunit nearby mines
-      for (int i = 0; i < _gridWidth; i++)
+      for (int i = 0; i < gridWidth; i++)
       {
-         for (int j = 0; j < _gridHeight; j++)
+         for (int j = 0; j < gridHeight; j++)
          {
             _grid[i][j].setNearbyMines(this.countNumberOfMines(_grid[i][j]));
          }
