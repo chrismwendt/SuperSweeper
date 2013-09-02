@@ -1,5 +1,6 @@
 package com.cs408.supersweeper;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -39,6 +40,10 @@ public class GamePanel extends JPanel implements MouseListener
       this.addMouseListener(this);
       this.gridWidth = Integer.parseInt(_prop.getProperty("gridWidth"));
       this.gridHeight = Integer.parseInt(_prop.getProperty("gridHeight"));
+      
+      int w = _gs.getGridUnit(0, 0).getBitmap().getWidth();
+      int h = _gs.getGridUnit(0, 0).getBitmap().getHeight();
+      setPreferredSize(new Dimension(_gs.gridWidth * w, _gs.gridHeight * h));
    }
 
    private void validate(Properties _prop)

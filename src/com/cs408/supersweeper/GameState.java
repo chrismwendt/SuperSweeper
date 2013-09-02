@@ -17,8 +17,8 @@ public class GameState
    private int _numOfFlags = 0;
    private double _score = 0;
    private boolean _isTimed = true;
-   private int _gridWidth;
-   private int _gridHeight;
+   public int gridWidth;
+   public int gridHeight;
    private int _gridNumSides;
 
    /** Constructors */
@@ -27,8 +27,8 @@ public class GameState
    {
       this._time = time;
       this._numMines = numMines;
-      this._gridHeight = gridHeight;
-      this._gridWidth = gridWidth;
+      this.gridHeight = gridHeight;
+      this.gridWidth = gridWidth;
       this._gridNumSides = gridNumSides;
       if (time == 0)
       {
@@ -63,12 +63,12 @@ public class GameState
 
    public void resetGrid()
    {
-      this._grid = new GridUnit[_gridWidth][_gridHeight];
+      this._grid = new GridUnit[gridWidth][gridHeight];
 
       // populate grid with blank tiles
-      for (int x = 0; x < _gridWidth; x++)
+      for (int x = 0; x < gridWidth; x++)
       {
-         for (int y = 0; y < _gridHeight; y++)
+         for (int y = 0; y < gridHeight; y++)
          {
             _grid[x][y] = new GridUnit(_gridNumSides, new Point(x, y));
          }
@@ -82,8 +82,8 @@ public class GameState
       Random r = new Random();
       for (int i = 0; i < _numMines; i++)
       {
-         int randX = r.nextInt(_gridWidth);
-         int randY = r.nextInt(_gridHeight);
+         int randX = r.nextInt(gridWidth);
+         int randY = r.nextInt(gridHeight);
          
          if(randX == x && randY == y)
          {
