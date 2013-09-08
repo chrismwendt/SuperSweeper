@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -14,33 +15,79 @@ public class GridUnit
 
    public enum State
    {
-      CHECKED, UNCHECKED, FLAGGED;
+      CHECKED, UNCHECKED, FLAGGED, PRESSED;
    }
 
    private boolean _isMine = false;
    private int _nearbyMines = 0;
-   private State _state = State.UNCHECKED;
-   private BufferedImage bitmap;
+   public State _state = State.UNCHECKED;
    private Point _coordinate;
    private int _numSides;
-   private ArrayList<Point> _adjacentUnits = new ArrayList<Point>();
+   private ArrayList<GridUnit> _adjacentUnits = new ArrayList<GridUnit>();
+   // TODO width and height should not be hardcoded, maybe set to the size of one of the images
+   public int width = 16, height = 16;
+   private static HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
+   
+   static {
+	   images.put("normal", Utility.imageFromFilename("images/grid_unit.png"));
+	   images.put("empty", Utility.imageFromFilename("images/grid_unit_empty.png"));
+	   images.put("hover", Utility.imageFromFilename("images/grid_unit_hover.png"));
+	   images.put("press", Utility.imageFromFilename("images/grid_unit_click.png"));
+	   images.put("mine", Utility.imageFromFilename("images/grid_unit_mine.png"));
+	   images.put("flag", Utility.imageFromFilename("images/grid_unit_flag.png"));
+	   for (int i = 1; i <= 8; i++) {
+		   images.put(String.valueOf(i), Utility.imageFromFilename("images/grid_unit_"+i+".png"));
+	   }
+   }
 
    /** Constructor */
    public GridUnit(int numSides, Point coordinate)
    {
       this._numSides = numSides;
       this._coordinate = coordinate;
-      this.bitmap = null;
-      this.setUnchecked();
       // TODO _bitmap = (getbitmap from numSides)
    }
 
    public void draw(Graphics g)
    {
-      g.drawImage(bitmap, 0, 0, null);
+	   BufferedImage image = null;
+	   
+	   switch (_state) {
+	   case UNCHECKED:
+		   image = images.get("normal");
+	       break;
+	   case CHECKED:
+		   // TODO replace grid_unit_empty with grid_unit_0
+		   if (_isMine) {
+			   image = images.get("mine");
+		   } else if (adjacentMineCount() > 0) {
+			   image = images.get(String.valueOf(adjacentMineCount()));
+		   } else {
+			   image = images.get("empty");
+		   }
+		   break;
+	   case FLAGGED:
+		   image = images.get("flag");
+		   break;
+	   case PRESSED:
+		   image = images.get("press");
+		   break;
+	   }
+	   
+	   g.drawImage(image, 0, 0, null);
    }
 
-   /** Getters */
+   public int adjacentMineCount() {
+	   int count = 0;
+	   for (GridUnit unit : _adjacentUnits) {
+		   if (unit.hasMine()) {
+			   count++;
+		   }
+	   }
+	   return count;
+   }
+
+/** Getters */
    public boolean hasMine()
    {
       return this._isMine;
@@ -61,12 +108,7 @@ public class GridUnit
       return this._coordinate;
    }
    
-   public BufferedImage getBitmap()
-   {
-      return this.bitmap;
-   }
-   
-   public ArrayList<Point> getAdjacentUnits()
+   public ArrayList<GridUnit> getAdjacentUnits()
    {
       return this._adjacentUnits;
    }
@@ -105,73 +147,19 @@ public class GridUnit
       this._isMine = hasMine;
    }
    
-   public void setMine()
+   public void toggleFlagged()
    {
-      this.setImageBitmap("images/grid_unit_mine.png");
-   }
-   
-   public void setChecked()
-   {
-      this.setState(State.CHECKED);
-      this.setImageBitmap("images/grid_unit_click.png");
-   }
-   
-   public void setCheckedNoState()
-   {
-      this.setImageBitmap("images/grid_unit_click.png");
-   }
-   
-   public void setEmpty()
-   {
-      this.setImageBitmap("images/grid_unit_empty.png");
-      this.setState(State.CHECKED);
-   }
-   
-   public void setFlagged()
-   {
-      this.setState(State.FLAGGED);
-      this.setImageBitmap("images/grid_unit_flag.png");
-   }
-   
-   public void setUnchecked()
-   {
-      this.setState(State.UNCHECKED);
-      this.setImageBitmap("images/grid_unit.png");
-   }
-   
-   public void setUncheckedNoState()
-   {
-      this.setImageBitmap("images/grid_unit.png");
-   }
-   
-   public void setHovered()
-   {
-      this.setImageBitmap("images/grid_unit_hover.png");
-   }
-   
-   public void setNumber(int num)
-   {
-      this.setImageBitmap("images/grid_unit_" + num + ".png");
-      this.setState(State.CHECKED);
+      if (_state == State.UNCHECKED || _state == State.PRESSED) {
+    	  _state = State.FLAGGED;
+      } else if (_state == State.FLAGGED || _state == State.PRESSED){
+    	  _state = State.UNCHECKED;
+      }
    }
 
 
    /** Helpers **/
-   public void setImageBitmap(String fileName)
+   public void addAdjacenctUnit(GridUnit unit)
    {
-      try
-      {
-         this.bitmap = ImageIO.read(new File(fileName));
-      }
-      catch (IOException e)
-      {
-         e.printStackTrace();
-      }
-   }
-
-   public void addAdjacenctUnit(Point point)
-   {
-      this._adjacentUnits.add(point);
-      
+      this._adjacentUnits.add(unit);
    }
 }

@@ -56,7 +56,7 @@ public class GameState
          for (int y = 0; y < _grid[0].length; y++)
          {
             if(_grid[x][y].hasMine())
-               _grid[x][y].setMine();
+               _grid[x][y]._state = GridUnit.State.CHECKED;
          }
       }      
    }
@@ -127,7 +127,7 @@ public class GameState
             {
                if (_grid[x + X][y + Y].hasMine())
                   numMines++;
-               unit.addAdjacenctUnit(new Point(x + X, y + Y));
+               unit.addAdjacenctUnit(_grid[x + X][y + Y]);
             }
             catch (Exception e)
             {
@@ -141,23 +141,19 @@ public class GameState
    
    public void exposeNumber(GridUnit unit)
    {
-      if(unit.getNearbyMineCount() > 0)
-      {
-         unit.setNumber(unit.getNearbyMineCount());
+ 	  unit._state = GridUnit.State.CHECKED;
+ 	  
+      if(unit.getNearbyMineCount() > 0) {
          return;
       }
-      else
-         unit.setEmpty();
       
-      
-      for(Point u : unit.getAdjacentUnits())
+      for(GridUnit u : unit.getAdjacentUnits())
       {
          //System.out.println(u + " | " + unit.getNearbyMineCount());
-         int x = (int) u.getX();
-         int y = (int) u.getY();
+         System.out.println(u + " | " + unit.getNearbyMineCount());
          
-         if(_grid[x][y].getState() != GridUnit.State.CHECKED)
-            exposeNumber(_grid[x][y]);
+         if(u.getState() != GridUnit.State.CHECKED)
+            exposeNumber(u);
          
       }
    }
@@ -165,8 +161,7 @@ public class GameState
    public void drawState(Graphics g)
    {
       BufferedImage unit = new BufferedImage(
-            _grid[0][0].getBitmap().getWidth(), _grid[0][0].getBitmap()
-                  .getHeight(), BufferedImage.TYPE_INT_ARGB);
+            _grid[0][0].width, _grid[0][0].height, BufferedImage.TYPE_INT_ARGB);
       Graphics unit_graphics = unit.getGraphics();
       for (int x = 0; x < _grid.length; x++)
       {

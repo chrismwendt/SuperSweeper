@@ -43,8 +43,8 @@ public class GamePanel extends JPanel implements MouseListener
       this.gridWidth = Integer.parseInt(_prop.getProperty("gridWidth"));
       this.gridHeight = Integer.parseInt(_prop.getProperty("gridHeight"));
       
-      int w = _gs.getGridUnit(0, 0).getBitmap().getWidth();
-      int h = _gs.getGridUnit(0, 0).getBitmap().getHeight();
+      int w = _gs.getGridUnit(0, 0).width;
+      int h = _gs.getGridUnit(0, 0).height;
       setPreferredSize(new Dimension(_gs.gridWidth * w, _gs.gridHeight * h));
 
       this.statusLabel = label;
@@ -103,50 +103,6 @@ private void validate(Properties _prop)
    /** Listeners */
    public void mouseClicked(MouseEvent e)
    {
-      int x = (e.getX()) / (tempUnit.getBitmap().getWidth());
-      int y = (e.getY()) / (tempUnit.getBitmap().getHeight());
-//      System.out.println("X: " + x + " Y: " + y + " | e.X: " + e.getX()
-//            + " e.Y: " + e.getY());
-
-      if (x >= this.gridWidth || y >= this.gridHeight)
-         return;
-
-      GridUnit gridUnit = _gs.getGridUnit(x, y);
-      boolean isMine = gridUnit.hasMine();
-
-      if(_firstClick && !SwingUtilities.isRightMouseButton(e))
-      {
-         _gs.populateMines(x, y);
-         _firstClick = false;
-      }
-      
-      if (SwingUtilities.isRightMouseButton(e))
-      {
-         if(gridUnit.getState() == GridUnit.State.UNCHECKED)
-         {
-            // flag
-            System.out.println(gridUnit.getState());
-            gridUnit.setFlagged();
-         }
-         else if(gridUnit.getState() == GridUnit.State.FLAGGED)
-            gridUnit.setUnchecked();
-         else
-            _gs.exposeNumber(gridUnit);
-      }
-      else if(gridUnit.getState() == GridUnit.State.FLAGGED)
-         gridUnit.setFlagged();
-      else if (isMine == true)
-      {
-         // mine go boom
-         _gs.exposeAllMines();
-      }
-      else if (isMine == false)
-      {
-            _gs.exposeNumber(gridUnit);
-      }
-
-      this.paint(this.getGraphics());
-      updateStatusLabel();
 
    }
 
@@ -163,14 +119,14 @@ private void validate(Properties _prop)
    public void mousePressed(MouseEvent e)
    {
 
-      int x = (e.getX()) / (tempUnit.getBitmap().getWidth());
-      int y = (e.getY()) / (tempUnit.getBitmap().getHeight());
+      int x = (e.getX()) / (tempUnit.width);
+      int y = (e.getY()) / (tempUnit.height);
 
       if (x >= this.gridWidth || y >= this.gridHeight)
          return;
       GridUnit gridUnit = _gs.getGridUnit(x, y);
 
-      gridUnit.setCheckedNoState();
+      gridUnit._state = GridUnit.State.PRESSED;
       this.paint(this.getGraphics());
       updateStatusLabel();
 
@@ -178,15 +134,38 @@ private void validate(Properties _prop)
 
    public void mouseReleased(MouseEvent e)
    {
-
-      int x = (e.getX()) / (tempUnit.getBitmap().getWidth());
-      int y = (e.getY()) / (tempUnit.getBitmap().getHeight());
+      int x = (e.getX()) / (tempUnit.width);
+      int y = (e.getY()) / (tempUnit.height);
+      System.out.println("X: " + x + " Y: " + y + " | e.X: " + e.getX()
+            + " e.Y: " + e.getY());
 
       if (x >= this.gridWidth || y >= this.gridHeight)
          return;
+
+      boolean clicked = _gs.getState(x, y);
       GridUnit gridUnit = _gs.getGridUnit(x, y);
 
-      gridUnit.setUncheckedNoState();
+      if(_firstClick && !SwingUtilities.isRightMouseButton(e))
+      {
+         _gs.populateMines(x, y);
+         _firstClick = false;
+      }
+      
+      if (SwingUtilities.isRightMouseButton(e))
+      {
+         // flag
+         gridUnit.toggleFlagged();
+      }
+      else if (clicked == true)
+      {
+         // mine go boom
+         _gs.exposeAllMines();
+      }
+      else if (clicked == false)
+      {
+         _gs.exposeNumber(gridUnit);
+      }
+
       this.paint(this.getGraphics());
       updateStatusLabel();
 
