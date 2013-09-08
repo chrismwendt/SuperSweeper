@@ -6,3 +6,4 @@
 6) All error handling (throws/try-catches) could be bugged
 7) Didnt add properties files to build path
 8) PopulateMines --> after check if firstClick, no i-- before continue
+9) Click and drag mouse from one grid unit to another, original grid unit stays pressed
