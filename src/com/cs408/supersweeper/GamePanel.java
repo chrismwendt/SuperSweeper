@@ -88,6 +88,11 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         _gs.drawState(g);
     }
 
+    public void stateUpdated() {
+        repaint();
+        updateStatusLabel();
+    }
+
     /** Listeners */
     public void mousePressed(MouseEvent e) {
         int x = e.getX() / tempUnit.width;
@@ -105,14 +110,12 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             gridUnit.flagPressed();
         }
 
-        repaint();
-        updateStatusLabel();
+        stateUpdated();
     }
 
     public void mouseReleased(MouseEvent e) {
         int x = e.getX() / tempUnit.width;
         int y = e.getY() / tempUnit.height;
-        System.out.println("X: " + x + " Y: " + y + " | e.X: " + e.getX() + " e.Y: " + e.getY());
 
         if (x >= gridWidth || y >= gridHeight) {
             return;
@@ -135,8 +138,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             gridUnit.flagReleased();
         }
 
-        repaint();
-        updateStatusLabel();
+        stateUpdated();
     }
 
     public void mouseDragged(MouseEvent e) {
@@ -146,7 +148,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
         int x = e.getX() / tempUnit.width;
         int y = e.getY() / tempUnit.height;
-        System.out.println("X: " + x + " Y: " + y + " | e.X: " + e.getX() + " e.Y: " + e.getY());
 
         if (x >= gridWidth || y >= gridHeight) {
             return;
@@ -160,8 +161,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             previouslyPressedGridUnit = gridUnit;
         }
 
-        repaint();
-        updateStatusLabel();
+        stateUpdated();
     }
 
     public void mouseClicked(MouseEvent e) {
