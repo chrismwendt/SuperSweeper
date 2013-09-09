@@ -1,21 +1,18 @@
 package com.cs408.supersweeper;
 
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GridUnit {
-    public enum State {
-        CHECKED, UNCHECKED, FLAGGED, PRESSED;
-    }
-
     private boolean _isMine = false;
     private int _nearbyMines = 0;
-    public State _state = State.UNCHECKED;
-    private Point _coordinate;
-    private int _numSides;
+    public boolean checked = false;
+    public boolean flagged = false;
+    public boolean pressed = false;
+    public boolean hovered = false;
+    public boolean exposed = false;
     private ArrayList<GridUnit> _adjacentUnits = new ArrayList<GridUnit>();
     // TODO width and height should not be hardcoded, maybe set to the size of one of the images
     public int width = 16, height = 16;
@@ -34,20 +31,13 @@ public class GridUnit {
     }
 
     /** Constructor */
-    public GridUnit(int numSides, Point coordinate) {
-        _numSides = numSides;
-        _coordinate = coordinate;
-        // TODO _bitmap = (getbitmap from numSides)
+    public GridUnit() {
     }
 
     public void draw(Graphics g) {
         BufferedImage image = null;
 
-        switch (_state) {
-        case UNCHECKED:
-            image = GridUnit.images.get("normal");
-            break;
-        case CHECKED:
+        if (checked) {
             // TODO replace grid_unit_empty with grid_unit_0
             if (_isMine) {
                 image = GridUnit.images.get("mine");
@@ -56,13 +46,20 @@ public class GridUnit {
             } else {
                 image = GridUnit.images.get("empty");
             }
-            break;
-        case FLAGGED:
-            image = GridUnit.images.get("flag");
-            break;
-        case PRESSED:
-            image = GridUnit.images.get("press");
-            break;
+        } else {
+            if (flagged) {
+                image = GridUnit.images.get("flag");
+            } else {
+                if (pressed) {
+                    image = GridUnit.images.get("press");
+                } else {
+                    if (hovered) {
+                        image = GridUnit.images.get("hover");
+                    } else {
+                        image = GridUnit.images.get("normal");
+                    }
+                }
+            }
         }
 
         g.drawImage(image, 0, 0, null);
@@ -87,45 +84,79 @@ public class GridUnit {
         return _nearbyMines;
     }
 
-    public State getState() {
-        return _state;
-    }
-
-    public Point getCoordinate() {
-        return _coordinate;
-    }
-
     public ArrayList<GridUnit> getAdjacentUnits() {
         return _adjacentUnits;
     }
 
     /** Setters */
-    public void setState(State newState) {
-        _state = newState;
-    }
-
-    public void setNearbyMines(int numMines) {
-        _nearbyMines = numMines;
-    }
-
-    public void setCoordinate(Point newLocation) {
-        _coordinate = newLocation;
-    }
 
     public void setHasMine(boolean hasMine) {
         _isMine = hasMine;
     }
 
-    public void toggleFlagged() {
-        if (_state == State.UNCHECKED || _state == State.PRESSED) {
-            _state = State.FLAGGED;
-        } else if (_state == State.FLAGGED || _state == State.PRESSED) {
-            _state = State.UNCHECKED;
-        }
-    }
-
     /** Helpers **/
     public void addAdjacenctUnit(GridUnit unit) {
         _adjacentUnits.add(unit);
+    }
+
+    private void exposeMines() {
+        if (exposed) {
+            return;
+        }
+
+        exposed = true;
+        if (_isMine) {
+            checked = true;
+        }
+
+        for (GridUnit unit : getAdjacentUnits()) {
+            if (!unit.exposed) {
+                unit.exposeMines();
+            }
+        }
+    }
+
+    private void check() {
+        checked = true;
+
+        if (adjacentMineCount() > 0) {
+            return;
+        }
+
+        for (GridUnit unit : getAdjacentUnits()) {
+            // System.out.println(u + " | " + getNearbyMineCount());
+            // System.out.println(unit + " | " + adjacentMineCount());
+
+            if (!unit.checked) {
+                unit.check();
+            }
+        }
+    }
+
+    public void checkPress() {
+        if (!checked && !flagged) {
+            pressed = true;
+        }
+    }
+
+    public void checkRelease() {
+        pressed = false;
+        if (!flagged) {
+            if (_isMine) {
+                exposeMines();
+            } else {
+                check();
+            }
+        }
+    }
+
+    public void flagPress() {
+        // ignore
+    }
+
+    public void flagRelease() {
+        if (!checked) {
+            flagged = !flagged;
+        }
     }
 }

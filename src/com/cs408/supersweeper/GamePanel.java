@@ -17,7 +17,7 @@ public class GamePanel extends JPanel implements MouseListener {
     private Properties _prop = new Properties();
     private int gridHeight;
     private int gridWidth;
-    private GridUnit tempUnit = new GridUnit(4, new Point(0, 0));
+    private GridUnit tempUnit = new GridUnit();
     private boolean _firstClick = true;
     private JLabel statusLabel;
 
@@ -95,7 +95,11 @@ public class GamePanel extends JPanel implements MouseListener {
         }
 
         GridUnit gridUnit = _gs.getGridUnit(x, y);
-        gridUnit._state = GridUnit.State.PRESSED;
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            gridUnit.checkPress();
+        } else if (SwingUtilities.isRightMouseButton(e)) {
+            gridUnit.flagPress();
+        }
 
         repaint();
         updateStatusLabel();
@@ -114,18 +118,17 @@ public class GamePanel extends JPanel implements MouseListener {
         GridUnit gridUnit = _gs.getGridUnit(x, y);
 
         if (_firstClick && !SwingUtilities.isRightMouseButton(e)) {
-            _gs.populateMines(x, y);
+            do {
+                _gs.resetGrid();
+                _gs.populateMines(new Point(x, y));
+            } while (gridUnit.hasMine());
             _firstClick = false;
         }
 
-        if (SwingUtilities.isRightMouseButton(e)) {
-            // flag
-            gridUnit.toggleFlagged();
-        } else if (clicked == true) {
-            // mine go boom
-            _gs.exposeAllMines();
-        } else if (clicked == false) {
-            _gs.exposeNumber(gridUnit);
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            gridUnit.checkRelease();
+        } else if (SwingUtilities.isRightMouseButton(e)) {
+            gridUnit.flagRelease();
         }
 
         repaint();

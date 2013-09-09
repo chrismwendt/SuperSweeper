@@ -4,7 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.util.Random;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class GameState {
     /** Global Variables */
@@ -29,7 +30,28 @@ public class GameState {
         if (time == 0) {
             _isTimed = false;
         }
-        resetGrid();
+
+        _grid = new GridUnit[gridWidth][gridHeight];
+
+        // initialize the grid
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                _grid[x][y] = new GridUnit();
+            }
+        }
+
+        // set adjacent grid units
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                for (int i = x - 1; i <= x + 1; i++) {
+                    for (int j = y - 1; j <= y + 1; j++) {
+                        if (isValidGridUnit(i, j) && !(i - x == 0 && j - y == 0)) {
+                            _grid[x][y].addAdjacenctUnit(_grid[i][j]);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // TODO: so far only says if has mine or not. needs to return state.
@@ -41,98 +63,23 @@ public class GameState {
         return _grid[x][y];
     }
 
-    public void exposeAllMines() {
-        for (int x = 0; x < _grid.length; x++) {
-            for (int y = 0; y < _grid[0].length; y++) {
-                if (_grid[x][y].hasMine()) {
-                    _grid[x][y]._state = GridUnit.State.CHECKED;
-                }
-            }
-        }
-    }
-
     public void resetGrid() {
-        _grid = new GridUnit[gridWidth][gridHeight];
-
-        // populate grid with blank tiles
         for (int x = 0; x < gridWidth; x++) {
             for (int y = 0; y < gridHeight; y++) {
-                _grid[x][y] = new GridUnit(_gridNumSides, new Point(x, y));
+                _grid[x][y].setHasMine(false);
             }
         }
     }
 
-    public void populateMines(int x, int y) {
-        // populate grid with bombs!
-        // TODO populate bombs after user first clicks
-        Random r = new Random();
+    public boolean isValidGridUnit(int x, int y) {
+        return x >= 0 && x < gridWidth && y >= 0 && y < gridHeight;
+    }
+
+    public void populateMines(Point first) {
+        GridUnit[] units = (GridUnit[]) Utility.flatten(_grid);
+        Collections.shuffle(Arrays.asList(units));
         for (int i = 0; i < _numMines; i++) {
-            int randX = r.nextInt(gridWidth);
-            int randY = r.nextInt(gridHeight);
-
-            if (randX == x && randY == y) {
-                i--;
-                continue;
-            }
-
-            GridUnit tmp = _grid[randX][randY];
-            if (!tmp.hasMine()) {
-                tmp.setHasMine(true);
-            } else {
-                i--;
-            }
-        }
-
-        // populate gridunit nearby mines
-        for (int i = 0; i < gridWidth; i++) {
-            for (int j = 0; j < gridHeight; j++) {
-                _grid[i][j].setNearbyMines(countNumberOfMines(_grid[i][j]));
-            }
-        }
-    }
-
-    private int countNumberOfMines(GridUnit unit) {
-        int numMines = 0;
-        int x = (int) unit.getCoordinate().getX();
-        int y = (int) unit.getCoordinate().getY();
-
-        if (unit.hasMine()) {
-            return -1;
-        }
-
-        for (int X = -1; X < 2; X++) {
-            for (int Y = -1; Y < 2; Y++) {
-                if (X == 0 && Y == 0) {
-                    continue;
-                }
-                try {
-                    if (_grid[x + X][y + Y].hasMine()) {
-                        numMines++;
-                    }
-                    unit.addAdjacenctUnit(_grid[x + X][y + Y]);
-                } catch (Exception e) {
-                    // ignore dis bish
-                    // I am ripe for bugs
-                }
-            }
-        }
-        return numMines;
-    }
-
-    public void exposeNumber(GridUnit unit) {
-        unit._state = GridUnit.State.CHECKED;
-
-        if (unit.getNearbyMineCount() > 0) {
-            return;
-        }
-
-        for (GridUnit u : unit.getAdjacentUnits()) {
-            // System.out.println(u + " | " + unit.getNearbyMineCount());
-            System.out.println(u + " | " + unit.getNearbyMineCount());
-
-            if (u.getState() != GridUnit.State.CHECKED) {
-                exposeNumber(u);
-            }
+            units[i].setHasMine(true);
         }
     }
 
@@ -153,7 +100,7 @@ public class GameState {
         int count = 0;
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
-                if (_grid[i][j].getState() == GridUnit.State.FLAGGED) {
+                if (_grid[i][j].flagged) {
                     count++;
                 }
             }
