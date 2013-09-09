@@ -1,6 +1,5 @@
 package com.cs408.supersweeper;
 
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -23,16 +22,11 @@ public class GameFrame implements ActionListener {
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    GameFrame window = new GameFrame();
-                    window.frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        try {
+            new GameFrame();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -42,6 +36,7 @@ public class GameFrame implements ActionListener {
      */
     public GameFrame() throws IOException {
         initialize();
+        frame.setVisible(true);
     }
 
     /**
