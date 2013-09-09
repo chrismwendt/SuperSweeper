@@ -1,5 +1,6 @@
 package com.cs408.supersweeper;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -68,14 +69,13 @@ public class GameFrame implements ActionListener
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.getContentPane().setLayout(new GridBagLayout());
       GridBagConstraints c = new GridBagConstraints();
-      
-      JLabel statusLabel = new JLabel();
+
+      GamePanel gp = new GamePanel("001.properties"); //load first level right away...
+      // TODO: Remove hard coded dimensions
+      frame.setMinimumSize(new Dimension(300, 300));
       c.gridy = 0;
-      frame.getContentPane().add(statusLabel, c);
-      
-      GamePanel gp = new GamePanel("001.properties", statusLabel); //load first level right away...
-      c.gridy = 1;
       frame.getContentPane().add(gp, c);
+      frame.pack();
       
       JMenuBar menuBar = new JMenuBar();
       frame.setJMenuBar(menuBar);

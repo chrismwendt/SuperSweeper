@@ -1,10 +1,9 @@
 package com.cs408.supersweeper;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.util.Random;
+
+import com.cs408.supersweeper.GridUnit.State;
 
 public class GameState
 {
@@ -12,7 +11,6 @@ public class GameState
    /** Global Variables */
    private GridUnit[][] _grid;
    private double _time;
-   private int _minesFound = 0;
    private int _numMines;
    private int _numOfFlags = 0;
    private double _score = 0;
@@ -37,26 +35,14 @@ public class GameState
       this.resetGrid();
 
    }
-
-   // TODO: so far only says if has mine or not. needs to return state.
-   public boolean getState(int x, int y)
-   {
-      return _grid[x][y].hasMine();
-   }
    
-   public GridUnit getGridUnit(int x, int y)
-   {
-      return this._grid[x][y];
-   }
-   
-   public void exposeAllMines()
+   public void exposeAll()
    {
       for (int x = 0; x < _grid.length; x++)
       {
          for (int y = 0; y < _grid[0].length; y++)
          {
-            if(_grid[x][y].hasMine())
-               _grid[x][y]._state = GridUnit.State.CHECKED;
+            _grid[x][y].setState(State.CHECKED);
          }
       }      
    }
@@ -70,7 +56,7 @@ public class GameState
       {
          for (int y = 0; y < gridHeight; y++)
          {
-            _grid[x][y] = new GridUnit(_gridNumSides, new Point(x, y));
+            _grid[x][y] = new GridUnit(new Point(x, y));
          }
       }
    }
@@ -141,51 +127,36 @@ public class GameState
    
    public void exposeNumber(GridUnit unit)
    {
- 	  unit._state = GridUnit.State.CHECKED;
- 	  
-      if(unit.getNearbyMineCount() > 0) {
+      unit.setState(State.CHECKED);
+      if(unit.getNearbyMineCount() > 0)
          return;
-      }
-      
+         
+
       for(GridUnit u : unit.getAdjacentUnits())
       {
-         //System.out.println(u + " | " + unit.getNearbyMineCount());
-         System.out.println(u + " | " + unit.getNearbyMineCount());
          
-         if(u.getState() != GridUnit.State.CHECKED)
+         if(u.getState() != GridUnit.State.CHECKED && u.getState() != GridUnit.State.FLAGGED)
             exposeNumber(u);
          
       }
    }
 
-   public void drawState(Graphics g)
-   {
-      BufferedImage unit = new BufferedImage(
-            _grid[0][0].width, _grid[0][0].height, BufferedImage.TYPE_INT_ARGB);
-      Graphics unit_graphics = unit.getGraphics();
-      for (int x = 0; x < _grid.length; x++)
-      {
-         for (int y = 0; y < _grid[0].length; y++)
-         {
-            unit_graphics.setColor(Color.WHITE);
-            unit_graphics.fillRect(0, 0, unit.getWidth(), unit.getHeight());
-            _grid[x][y].draw(unit_graphics);
-            g.drawImage(unit, x * unit.getWidth(), y * unit.getHeight(), null);
-         }
-      }
-   }
 
+   /** Getters */
    public int getFlagCount() {
-	   int count = 0;
-	   for (int i = 0; i < gridWidth; i++)
-	      {
-	         for (int j = 0; j < gridHeight; j++)
-	         {
-	            if (_grid[i][j].getState() == GridUnit.State.FLAGGED) {
-	            	count++;
-	            }
-	         }
-	      }
-	   return count;
+	   return this._numOfFlags;
+   }
+   
+   public GridUnit[][] getGrid() {
+      return this._grid;
+   }
+   public GridUnit getGridUnit(int x, int y)
+   {
+      return this._grid[x][y];
+   }
+   
+   /** Setters */
+   public void setFlagCount(int flagCount) {
+      this._numOfFlags = flagCount;
    }
 }

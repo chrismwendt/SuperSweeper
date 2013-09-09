@@ -1,12 +1,10 @@
 package com.cs408.supersweeper;
 
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -20,74 +18,19 @@ public class GridUnit
 
    private boolean _isMine = false;
    private int _nearbyMines = 0;
-   public State _state = State.UNCHECKED;
+   private State _state = State.UNCHECKED;
+   private BufferedImage bitmap;
    private Point _coordinate;
-   private int _numSides;
    private ArrayList<GridUnit> _adjacentUnits = new ArrayList<GridUnit>();
-   // TODO width and height should not be hardcoded, maybe set to the size of one of the images
-   public int width = 16, height = 16;
-   private static HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
-   
-   static {
-	   images.put("normal", Utility.imageFromFilename("images/grid_unit.png"));
-	   images.put("empty", Utility.imageFromFilename("images/grid_unit_empty.png"));
-	   images.put("hover", Utility.imageFromFilename("images/grid_unit_hover.png"));
-	   images.put("press", Utility.imageFromFilename("images/grid_unit_click.png"));
-	   images.put("mine", Utility.imageFromFilename("images/grid_unit_mine.png"));
-	   images.put("flag", Utility.imageFromFilename("images/grid_unit_flag.png"));
-	   for (int i = 1; i <= 8; i++) {
-		   images.put(String.valueOf(i), Utility.imageFromFilename("images/grid_unit_"+i+".png"));
-	   }
-   }
 
    /** Constructor */
-   public GridUnit(int numSides, Point coordinate)
+   public GridUnit(Point coordinate)
    {
-      this._numSides = numSides;
       this._coordinate = coordinate;
-      // TODO _bitmap = (getbitmap from numSides)
+      this.setState(State.UNCHECKED);
    }
 
-   public void draw(Graphics g)
-   {
-	   BufferedImage image = null;
-	   
-	   switch (_state) {
-	   case UNCHECKED:
-		   image = images.get("normal");
-	       break;
-	   case CHECKED:
-		   // TODO replace grid_unit_empty with grid_unit_0
-		   if (_isMine) {
-			   image = images.get("mine");
-		   } else if (adjacentMineCount() > 0) {
-			   image = images.get(String.valueOf(adjacentMineCount()));
-		   } else {
-			   image = images.get("empty");
-		   }
-		   break;
-	   case FLAGGED:
-		   image = images.get("flag");
-		   break;
-	   case PRESSED:
-		   image = images.get("press");
-		   break;
-	   }
-	   
-	   g.drawImage(image, 0, 0, null);
-   }
-
-   public int adjacentMineCount() {
-	   int count = 0;
-	   for (GridUnit unit : _adjacentUnits) {
-		   if (unit.hasMine()) {
-			   count++;
-		   }
-	   }
-	   return count;
-   }
-
-/** Getters */
+   /** Getters */
    public boolean hasMine()
    {
       return this._isMine;
@@ -108,6 +51,11 @@ public class GridUnit
       return this._coordinate;
    }
    
+   public BufferedImage getBitmap()
+   {
+      return this.bitmap;
+   }
+   
    public ArrayList<GridUnit> getAdjacentUnits()
    {
       return this._adjacentUnits;
@@ -116,20 +64,31 @@ public class GridUnit
    /** Setters */
    public void setState(State newState)
    {
+      /*
+       * Sets the bitmap according to the given state
+       */
       this._state = newState;
-//      switch (newState)
-//      {
-//      default:
-//      case UNCHECKED:
-//         // TODO: Change bitmap
-//         break;
-//      case CHECKED:
-//         // TODO: change bitmap
-//         break;
-//      case FLAGGED:
-//         // TODO: change bitmap
-//         break;
-//      }
+      switch (newState)
+      {
+      default:
+      case UNCHECKED:
+         this.setImageBitmap("images/grid_unit.png");
+         break;
+      case CHECKED:
+         if(this._nearbyMines == 0)
+            this.setImageBitmap("images/grid_unit_empty.png");
+         else if(this._isMine)
+            this.setImageBitmap("images/grid_unit_mine.png");
+         else
+            this.setImageBitmap("images/grid_unit_" + this._nearbyMines + ".png");
+         break;
+      case PRESSED:
+         this.setImageBitmap("images/grid_unit_click.png");
+         break;
+      case FLAGGED:
+         this.setImageBitmap("images/grid_unit_flag.png");
+         break;
+      }
    }
    
    public void setNearbyMines(int numMines)
@@ -147,19 +106,24 @@ public class GridUnit
       this._isMine = hasMine;
    }
    
-   public void toggleFlagged()
+   public void addAdjacenctUnit(GridUnit unit)
    {
-      if (_state == State.UNCHECKED || _state == State.PRESSED) {
-    	  _state = State.FLAGGED;
-      } else if (_state == State.FLAGGED || _state == State.PRESSED){
-    	  _state = State.UNCHECKED;
-      }
+      this._adjacentUnits.add(unit);
+      
    }
 
 
    /** Helpers **/
-   public void addAdjacenctUnit(GridUnit unit)
+   private void setImageBitmap(String fileName)
    {
-      this._adjacentUnits.add(unit);
+      try
+      {
+         this.bitmap = ImageIO.read(new File(fileName));
+      }
+      catch (IOException e)
+      {
+         e.printStackTrace();
+      }
    }
+
 }
