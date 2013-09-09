@@ -5,13 +5,14 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.Properties;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class GamePanel extends JPanel implements MouseListener {
+public class GamePanel extends JPanel implements MouseListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
     private GameState _gs;
     private Properties _prop = new Properties();
@@ -20,6 +21,7 @@ public class GamePanel extends JPanel implements MouseListener {
     private GridUnit tempUnit = new GridUnit();
     private boolean _firstClick = true;
     private JLabel statusLabel;
+    private GridUnit previouslyPressedGridUnit = null;
 
     /** Constructor */
     public GamePanel(String propFileName, JLabel label) {
@@ -36,6 +38,7 @@ public class GamePanel extends JPanel implements MouseListener {
         _gs = new GameState(Double.parseDouble(_prop.getProperty("time")), Integer.parseInt(_prop.getProperty("numMines")), Integer.parseInt(_prop.getProperty("gridHeight")), Integer.parseInt(_prop.getProperty("gridWidth")), Integer.parseInt(_prop.getProperty("gridNumSides")));
 
         addMouseListener(this);
+        addMouseMotionListener(this);
         gridWidth = Integer.parseInt(_prop.getProperty("gridWidth"));
         gridHeight = Integer.parseInt(_prop.getProperty("gridHeight"));
 
@@ -97,6 +100,7 @@ public class GamePanel extends JPanel implements MouseListener {
         GridUnit gridUnit = _gs.getGridUnit(x, y);
         if (SwingUtilities.isLeftMouseButton(e)) {
             gridUnit.checkPressed();
+            previouslyPressedGridUnit = gridUnit;
         } else if (SwingUtilities.isRightMouseButton(e)) {
             gridUnit.flagPressed();
         }
@@ -126,8 +130,34 @@ public class GamePanel extends JPanel implements MouseListener {
 
         if (SwingUtilities.isLeftMouseButton(e)) {
             gridUnit.checkReleased();
+            previouslyPressedGridUnit = null;
         } else if (SwingUtilities.isRightMouseButton(e)) {
             gridUnit.flagReleased();
+        }
+
+        repaint();
+        updateStatusLabel();
+    }
+
+    public void mouseDragged(MouseEvent e) {
+        if (previouslyPressedGridUnit == null) {
+            return;
+        }
+
+        int x = e.getX() / tempUnit.width;
+        int y = e.getY() / tempUnit.height;
+        System.out.println("X: " + x + " Y: " + y + " | e.X: " + e.getX() + " e.Y: " + e.getY());
+
+        if (x >= gridWidth || y >= gridHeight) {
+            return;
+        }
+
+        GridUnit gridUnit = _gs.getGridUnit(x, y);
+
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            previouslyPressedGridUnit.checkCancelled();
+            gridUnit.checkPressed();
+            previouslyPressedGridUnit = gridUnit;
         }
 
         repaint();
@@ -141,5 +171,8 @@ public class GamePanel extends JPanel implements MouseListener {
     }
 
     public void mouseExited(MouseEvent e) {
+    }
+
+    public void mouseMoved(MouseEvent arg0) {
     }
 }

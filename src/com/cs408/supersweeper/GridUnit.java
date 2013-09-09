@@ -125,4 +125,8 @@ public class GridUnit {
             isFlagged = !isFlagged;
         }
     }
+
+    public void checkCancelled() {
+        isPressed = false;
+    }
 }
