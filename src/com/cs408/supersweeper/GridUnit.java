@@ -45,20 +45,14 @@ public class GridUnit {
             } else {
                 image = GridUnit.images.get("empty");
             }
+        } else if (isFlagged) {
+            image = GridUnit.images.get("flag");
+        } else if (isPressed) {
+            image = GridUnit.images.get("press");
+        } else if (isHovered) {
+            image = GridUnit.images.get("hover");
         } else {
-            if (isFlagged) {
-                image = GridUnit.images.get("flag");
-            } else {
-                if (isPressed) {
-                    image = GridUnit.images.get("press");
-                } else {
-                    if (isHovered) {
-                        image = GridUnit.images.get("hover");
-                    } else {
-                        image = GridUnit.images.get("normal");
-                    }
-                }
-            }
+            image = GridUnit.images.get("normal");
         }
 
         g.drawImage(image, 0, 0, null);
