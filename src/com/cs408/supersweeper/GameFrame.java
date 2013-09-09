@@ -22,11 +22,7 @@ public class GameFrame implements ActionListener {
      * Launch the application.
      */
     public static void main(String[] args) {
-        try {
-            new GameFrame();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new GameFrame();
     }
 
     /**
@@ -34,7 +30,7 @@ public class GameFrame implements ActionListener {
      * 
      * @throws IOException
      */
-    public GameFrame() throws IOException {
+    public GameFrame() {
         initialize();
         frame.setVisible(true);
     }
@@ -44,7 +40,7 @@ public class GameFrame implements ActionListener {
      * 
      * @throws IOException
      */
-    private void initialize() throws IOException {
+    private void initialize() {
         frame = new JFrame();
         frame.setBounds(100, 100, 450, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -22,9 +22,14 @@ public class GamePanel extends JPanel implements MouseListener {
     private JLabel statusLabel;
 
     /** Constructor */
-    public GamePanel(String propFileName, JLabel label) throws IOException {
-        // Fetch the specified properties file (throws ioexception if its not there)
-        _prop.load(this.getClass().getResourceAsStream("/" + propFileName));
+    public GamePanel(String propFileName, JLabel label) {
+        // Fetch the specified properties file
+        try {
+            _prop.load(this.getClass().getResourceAsStream("/" + propFileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
         validate(_prop);
 
         // Make a new GameState from the specified properties file
