@@ -121,7 +121,7 @@ public class GamePanel extends JPanel implements MouseListener {
             do {
                 _gs.resetGrid();
                 _gs.populateMines(new Point(x, y));
-            } while (gridUnit.hasMine());
+            } while (gridUnit.mine);
             _firstClick = false;
         }
 

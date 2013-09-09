@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GridUnit {
-    private boolean _isMine = false;
-    private int _nearbyMines = 0;
+    public boolean mine = false;
     public boolean checked = false;
     public boolean flagged = false;
     public boolean pressed = false;
     public boolean hovered = false;
     public boolean exposed = false;
-    private ArrayList<GridUnit> _adjacentUnits = new ArrayList<GridUnit>();
+    public ArrayList<GridUnit> _adjacentUnits = new ArrayList<GridUnit>();
     // TODO width and height should not be hardcoded, maybe set to the size of one of the images
     public int width = 16, height = 16;
     private static HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
@@ -39,7 +38,7 @@ public class GridUnit {
 
         if (checked) {
             // TODO replace grid_unit_empty with grid_unit_0
-            if (_isMine) {
+            if (mine) {
                 image = GridUnit.images.get("mine");
             } else if (adjacentMineCount() > 0) {
                 image = GridUnit.images.get(String.valueOf(adjacentMineCount()));
@@ -68,35 +67,11 @@ public class GridUnit {
     public int adjacentMineCount() {
         int count = 0;
         for (GridUnit unit : _adjacentUnits) {
-            if (unit.hasMine()) {
+            if (unit.mine) {
                 count++;
             }
         }
         return count;
-    }
-
-    /** Getters */
-    public boolean hasMine() {
-        return _isMine;
-    }
-
-    public int getNearbyMineCount() {
-        return _nearbyMines;
-    }
-
-    public ArrayList<GridUnit> getAdjacentUnits() {
-        return _adjacentUnits;
-    }
-
-    /** Setters */
-
-    public void setHasMine(boolean hasMine) {
-        _isMine = hasMine;
-    }
-
-    /** Helpers **/
-    public void addAdjacenctUnit(GridUnit unit) {
-        _adjacentUnits.add(unit);
     }
 
     private void exposeMines() {
@@ -105,11 +80,11 @@ public class GridUnit {
         }
 
         exposed = true;
-        if (_isMine) {
+        if (mine) {
             checked = true;
         }
 
-        for (GridUnit unit : getAdjacentUnits()) {
+        for (GridUnit unit : _adjacentUnits) {
             if (!unit.exposed) {
                 unit.exposeMines();
             }
@@ -123,7 +98,7 @@ public class GridUnit {
             return;
         }
 
-        for (GridUnit unit : getAdjacentUnits()) {
+        for (GridUnit unit : _adjacentUnits) {
             // System.out.println(u + " | " + getNearbyMineCount());
             // System.out.println(unit + " | " + adjacentMineCount());
 
@@ -142,7 +117,7 @@ public class GridUnit {
     public void checkRelease() {
         pressed = false;
         if (!flagged) {
-            if (_isMine) {
+            if (mine) {
                 exposeMines();
             } else {
                 check();

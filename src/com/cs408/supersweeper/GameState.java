@@ -46,7 +46,7 @@ public class GameState {
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
                         if (isValidGridUnit(i, j) && !(i - x == 0 && j - y == 0)) {
-                            _grid[x][y].addAdjacenctUnit(_grid[i][j]);
+                            _grid[x][y]._adjacentUnits.add(_grid[i][j]);
                         }
                     }
                 }
@@ -56,7 +56,7 @@ public class GameState {
 
     // TODO: so far only says if has mine or not. needs to return state.
     public boolean getState(int x, int y) {
-        return _grid[x][y].hasMine();
+        return _grid[x][y].mine;
     }
 
     public GridUnit getGridUnit(int x, int y) {
@@ -66,7 +66,7 @@ public class GameState {
     public void resetGrid() {
         for (int x = 0; x < gridWidth; x++) {
             for (int y = 0; y < gridHeight; y++) {
-                _grid[x][y].setHasMine(false);
+                _grid[x][y].mine = false;
             }
         }
     }
@@ -79,7 +79,7 @@ public class GameState {
         GridUnit[] units = (GridUnit[]) Utility.flatten(_grid);
         Collections.shuffle(Arrays.asList(units));
         for (int i = 0; i < _numMines; i++) {
-            units[i].setHasMine(true);
+            units[i].mine = true;
         }
     }
 
