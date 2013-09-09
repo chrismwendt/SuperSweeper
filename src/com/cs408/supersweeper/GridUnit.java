@@ -1,129 +1,153 @@
 package com.cs408.supersweeper;
 
-import java.awt.Point;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import javax.imageio.ImageIO;
+public class GridUnit {
+    public boolean isMined = false;
+    public boolean isChecked = false;
+    public boolean isFlagged = false;
+    public boolean isPressed = false;
+    public boolean isHovered = false;
+    public boolean isExposed = false;
+    public ArrayList<GridUnit> adjacentGridUnits = new ArrayList<GridUnit>();
+    private BufferedImage image;
+    private static HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
+    public static BufferedImage sample;
 
-public class GridUnit
-{
+    static {
+        GridUnit.images.put("normal", Utility.imageFromFilename("images/grid_unit.png"));
+        GridUnit.images.put("empty", Utility.imageFromFilename("images/grid_unit_empty.png"));
+        GridUnit.images.put("hover", Utility.imageFromFilename("images/grid_unit_hover.png"));
+        GridUnit.images.put("press", Utility.imageFromFilename("images/grid_unit_click.png"));
+        GridUnit.images.put("mine", Utility.imageFromFilename("images/grid_unit_mine.png"));
+        GridUnit.images.put("flag", Utility.imageFromFilename("images/grid_unit_flag.png"));
+        for (int i = 1; i <= 8; i++) {
+            GridUnit.images.put(String.valueOf(i), Utility.imageFromFilename("images/grid_unit_" + i + ".png"));
+        }
+        sample = GridUnit.images.get("normal");
+    }
 
-   public enum State
-   {
-      CHECKED, UNCHECKED, FLAGGED, PRESSED;
-   }
+    /** Constructor */
+    public GridUnit() {
+        image = GridUnit.images.get("normal");
+    }
 
-   private boolean _isMine = false;
-   private int _nearbyMines = 0;
-   private State _state = State.UNCHECKED;
-   private BufferedImage bitmap;
-   private Point _coordinate;
-   private ArrayList<GridUnit> _adjacentUnits = new ArrayList<GridUnit>();
+    public void setImage(BufferedImage newImage) {
+        image = newImage;
+    }
 
-   /** Constructor */
-   public GridUnit(Point coordinate)
-   {
-      this._coordinate = coordinate;
-      this.setState(State.UNCHECKED);
-   }
+    public void stateChanged() {
+        if (isChecked) {
+            // TODO replace grid_unit_empty with grid_unit_0
+            if (isMined) {
+                image = GridUnit.images.get("mine");
+            } else if (adjacentMineCount() > 0) {
+                image = GridUnit.images.get(String.valueOf(adjacentMineCount()));
+            } else {
+                image = GridUnit.images.get("empty");
+            }
+        } else if (isFlagged) {
+            image = GridUnit.images.get("flag");
+        } else if (isPressed) {
+            image = GridUnit.images.get("press");
+        } else if (isHovered) {
+            image = GridUnit.images.get("hover");
+        } else {
+            image = GridUnit.images.get("normal");
+        }
+    }
 
-   /** Getters */
-   public boolean hasMine()
-   {
-      return this._isMine;
-   }
+    public int adjacentMineCount() {
+        int count = 0;
+        for (GridUnit unit : adjacentGridUnits) {
+            if (unit.isMined) {
+                count++;
+            }
+        }
+        return count;
+    }
 
-   public int getNearbyMineCount()
-   {
-      return this._nearbyMines;
-   }
+    private void exposeMines() {
+        if (isExposed) {
+            return;
+        }
 
-   public State getState()
-   {
-      return this._state;
-   }
+        isExposed = true;
+        if (isMined) {
+            isChecked = true;
+        }
+        
+        stateChanged();
 
-   public Point getCoordinate()
-   {
-      return this._coordinate;
-   }
-   
-   public BufferedImage getBitmap()
-   {
-      return this.bitmap;
-   }
-   
-   public ArrayList<GridUnit> getAdjacentUnits()
-   {
-      return this._adjacentUnits;
-   }
+        for (GridUnit unit : adjacentGridUnits) {
+            if (!unit.isExposed) {
+                unit.exposeMines();
+            }
+        }
+    }
 
-   /** Setters */
-   public void setState(State newState)
-   {
-      /*
-       * Sets the bitmap according to the given state
-       */
-      this._state = newState;
-      switch (newState)
-      {
-      default:
-      case UNCHECKED:
-         this.setImageBitmap("images/grid_unit.png");
-         break;
-      case CHECKED:
-         if(this._nearbyMines == 0)
-            this.setImageBitmap("images/grid_unit_empty.png");
-         else if(this._isMine)
-            this.setImageBitmap("images/grid_unit_mine.png");
-         else
-            this.setImageBitmap("images/grid_unit_" + this._nearbyMines + ".png");
-         break;
-      case PRESSED:
-         this.setImageBitmap("images/grid_unit_click.png");
-         break;
-      case FLAGGED:
-         this.setImageBitmap("images/grid_unit_flag.png");
-         break;
-      }
-   }
-   
-   public void setNearbyMines(int numMines)
-   {
-      this._nearbyMines = numMines;
-   }
+    private void check() {
+        isChecked = true;
+        
+        stateChanged();
 
-   public void setCoordinate(Point newLocation)
-   {
-      this._coordinate = newLocation;
-   }
+        if (adjacentMineCount() > 0) {
+            return;
+        }
 
-   public void setHasMine(boolean hasMine)
-   {
-      this._isMine = hasMine;
-   }
-   
-   public void addAdjacenctUnit(GridUnit unit)
-   {
-      this._adjacentUnits.add(unit);
-      
-   }
+        for (GridUnit unit : adjacentGridUnits) {
+            if (!unit.isChecked) {
+                unit.check();
+            }
+        }
+    }
 
+    public void checkPressed() {
+        if (!isChecked && !isFlagged) {
+            isPressed = true;
+        }
+        
+        stateChanged();
+    }
 
-   /** Helpers **/
-   private void setImageBitmap(String fileName)
-   {
-      try
-      {
-         this.bitmap = ImageIO.read(new File(fileName));
-      }
-      catch (IOException e)
-      {
-         e.printStackTrace();
-      }
-   }
+    public void checkReleased() {
+        isPressed = false;
+        if (!isFlagged) {
+            if (isMined) {
+                exposeMines();
+            } else {
+                check();
+            }
+        }
+        
+        stateChanged();
+    }
 
+    public void flagPressed() {
+        // ignore
+        
+        stateChanged();
+    }
+
+    public void flagReleased() {
+        if (!isChecked) {
+            isFlagged = !isFlagged;
+        }
+        
+        stateChanged();
+    }
+
+    public void checkCancelled() {
+        isPressed = false;
+        
+        stateChanged();
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
 }

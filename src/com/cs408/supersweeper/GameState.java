@@ -1,12 +1,14 @@
 package com.cs408.supersweeper;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
-import com.cs408.supersweeper.GridUnit.State;
-
-public class GameState
-{
+public class GameState {
 
    /** Global Variables */
    private GridUnit[][] _grid;
@@ -32,131 +34,70 @@ public class GameState
       {
          _isTimed = false;
       }
-      this.resetGrid();
 
-   }
-   
-   public void exposeAll()
-   {
-      for (int x = 0; x < _grid.length; x++)
-      {
-         for (int y = 0; y < _grid[0].length; y++)
-         {
-            _grid[x][y].setState(State.CHECKED);
-         }
-      }      
-   }
+        _grid = new GridUnit[gridWidth][gridHeight];
 
-   public void resetGrid()
-   {
-      this._grid = new GridUnit[gridWidth][gridHeight];
-
-      // populate grid with blank tiles
-      for (int x = 0; x < gridWidth; x++)
-      {
-         for (int y = 0; y < gridHeight; y++)
-         {
-            _grid[x][y] = new GridUnit(new Point(x, y));
-         }
-      }
-   }
-   
-   public void populateMines(int x, int y)
-   {
-      // populate grid with bombs!
-      // TODO populate bombs after user first clicks
-      Random r = new Random();
-      for (int i = 0; i < _numMines; i++)
-      {
-         int randX = r.nextInt(gridWidth);
-         int randY = r.nextInt(gridHeight);
-         
-         if(randX == x && randY == y)
-         {
-            i--;
-            continue;
-         }
-         
-         GridUnit tmp = _grid[randX][randY];
-         if (!tmp.hasMine())
-            tmp.setHasMine(true);
-         else
-            i--;
-      }
-      
-      //populate gridunit nearby mines
-      for (int i = 0; i < gridWidth; i++)
-      {
-         for (int j = 0; j < gridHeight; j++)
-         {
-            _grid[i][j].setNearbyMines(this.countNumberOfMines(_grid[i][j]));
-         }
-      }
-   }
-   
-   private int countNumberOfMines(GridUnit unit)
-   {
-      int numMines = 0;
-      int x = (int) unit.getCoordinate().getX();
-      int y = (int) unit.getCoordinate().getY();
-      
-      if(unit.hasMine())
-         return -1;
-      
-      for (int X = -1; X < 2; X++)
-      {
-         for (int Y = -1; Y < 2; Y++)
-         {
-            if(X==0 && Y==0)
-               continue;
-            try
-            {
-               if (_grid[x + X][y + Y].hasMine())
-                  numMines++;
-               unit.addAdjacenctUnit(_grid[x + X][y + Y]);
+        // initialize the grid
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                _grid[x][y] = new GridUnit();
             }
-            catch (Exception e)
-            {
-               // ignore dis bish
-               // I am ripe for bugs
+        }
+
+        // set adjacent grid units
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                for (int i = x - 1; i <= x + 1; i++) {
+                    for (int j = y - 1; j <= y + 1; j++) {
+                        if (isValidGridUnit(i, j) && !(i - x == 0 && j - y == 0)) {
+                            _grid[x][y].adjacentGridUnits.add(_grid[i][j]);
+                        }
+                    }
+                }
             }
-         }
-      }
-      return numMines;
-   }
-   
-   public void exposeNumber(GridUnit unit)
-   {
-      unit.setState(State.CHECKED);
-      if(unit.getNearbyMineCount() > 0)
-         return;
-         
-
-      for(GridUnit u : unit.getAdjacentUnits())
-      {
-         
-         if(u.getState() != GridUnit.State.CHECKED && u.getState() != GridUnit.State.FLAGGED)
-            exposeNumber(u);
-         
-      }
-   }
-
-
-   /** Getters */
-   public int getFlagCount() {
-	   return this._numOfFlags;
+        }
    }
    
    public GridUnit[][] getGrid() {
-      return this._grid;
+       return _grid;
    }
+   
    public GridUnit getGridUnit(int x, int y)
    {
       return this._grid[x][y];
    }
-   
-   /** Setters */
-   public void setFlagCount(int flagCount) {
-      this._numOfFlags = flagCount;
+
+    public void resetGrid() {
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                _grid[x][y].isMined = false;
+            }
+        }
+    }
+
+    public boolean isValidGridUnit(int x, int y) {
+        return x >= 0 && x < gridWidth && y >= 0 && y < gridHeight;
+    }
+
+    public void populateMines() {
+        GridUnit[] units = (GridUnit[]) Utility.flatten(_grid);
+        Collections.shuffle(Arrays.asList(units));
+        for (int i = 0; i < _numMines; i++) {
+            units[i].isMined = true;
+        }
+    }
+
+   public int getFlagCount() {
+	   int count = 0;
+	   for (int i = 0; i < gridWidth; i++)
+	      {
+	         for (int j = 0; j < gridHeight; j++)
+	         {
+	            if (_grid[i][j].isFlagged) {
+	            	count++;
+	            }
+	         }
+	      }
+	   return count;
    }
 }

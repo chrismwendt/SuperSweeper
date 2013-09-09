@@ -1,7 +1,6 @@
 package com.cs408.supersweeper;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -14,8 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-public class GameFrame implements ActionListener
-{
+public class GameFrame implements ActionListener {
 
    private JFrame frame;
    private JMenuItem mntmNewGame;
@@ -26,50 +24,34 @@ public class GameFrame implements ActionListener
    /**
     * Launch the application.
     */
-   public static void main(String[] args)
-   {
-	   
-      EventQueue.invokeLater(new Runnable()
-      {
-         public void run()
-         {
-            try
-            {
-               GameFrame window = new GameFrame();
-               window.frame.setVisible(true);
-               
-            }
-            catch (Exception e)
-            {
-               e.printStackTrace();
-            }
-         }
-      });
+    public static void main(String[] args) {
+        new GameFrame();
       
       
    }
 
    /**
     * Create the application.
+     * 
  * @throws IOException 
     */
-   public GameFrame() throws IOException
-   {
+    public GameFrame() {
       initialize();
+        frame.setVisible(true);
    }
 
    /**
     * Initialize the contents of the frame.
+     * 
  * @throws IOException 
     */
-   private void initialize() throws IOException
-   {
+    private void initialize() {
       frame = new JFrame();
       frame.setBounds(100, 100, 450, 300);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.getContentPane().setLayout(new GridBagLayout());
       GridBagConstraints c = new GridBagConstraints();
-
+      
       GamePanel gp = new GamePanel("001.properties"); //load first level right away...
       // TODO: Remove hard coded dimensions
       frame.setMinimumSize(new Dimension(300, 300));
