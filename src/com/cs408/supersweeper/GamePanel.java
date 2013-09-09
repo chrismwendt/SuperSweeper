@@ -96,9 +96,9 @@ public class GamePanel extends JPanel implements MouseListener {
 
         GridUnit gridUnit = _gs.getGridUnit(x, y);
         if (SwingUtilities.isLeftMouseButton(e)) {
-            gridUnit.checkPress();
+            gridUnit.checkPressed();
         } else if (SwingUtilities.isRightMouseButton(e)) {
-            gridUnit.flagPress();
+            gridUnit.flagPressed();
         }
 
         repaint();
@@ -121,14 +121,14 @@ public class GamePanel extends JPanel implements MouseListener {
             do {
                 _gs.resetGrid();
                 _gs.populateMines(new Point(x, y));
-            } while (gridUnit.mine);
+            } while (gridUnit.isMined);
             _firstClick = false;
         }
 
         if (SwingUtilities.isLeftMouseButton(e)) {
-            gridUnit.checkRelease();
+            gridUnit.checkReleased();
         } else if (SwingUtilities.isRightMouseButton(e)) {
-            gridUnit.flagRelease();
+            gridUnit.flagReleased();
         }
 
         repaint();

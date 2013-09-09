@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GridUnit {
-    public boolean mine = false;
-    public boolean checked = false;
-    public boolean flagged = false;
-    public boolean pressed = false;
-    public boolean hovered = false;
-    public boolean exposed = false;
-    public ArrayList<GridUnit> _adjacentUnits = new ArrayList<GridUnit>();
+    public boolean isMined = false;
+    public boolean isChecked = false;
+    public boolean isFlagged = false;
+    public boolean isPressed = false;
+    public boolean isHovered = false;
+    public boolean isExposed = false;
+    public ArrayList<GridUnit> adjacentGridUnits = new ArrayList<GridUnit>();
     // TODO width and height should not be hardcoded, maybe set to the size of one of the images
     public int width = 16, height = 16;
     private static HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
@@ -36,9 +36,9 @@ public class GridUnit {
     public void draw(Graphics g) {
         BufferedImage image = null;
 
-        if (checked) {
+        if (isChecked) {
             // TODO replace grid_unit_empty with grid_unit_0
-            if (mine) {
+            if (isMined) {
                 image = GridUnit.images.get("mine");
             } else if (adjacentMineCount() > 0) {
                 image = GridUnit.images.get(String.valueOf(adjacentMineCount()));
@@ -46,13 +46,13 @@ public class GridUnit {
                 image = GridUnit.images.get("empty");
             }
         } else {
-            if (flagged) {
+            if (isFlagged) {
                 image = GridUnit.images.get("flag");
             } else {
-                if (pressed) {
+                if (isPressed) {
                     image = GridUnit.images.get("press");
                 } else {
-                    if (hovered) {
+                    if (isHovered) {
                         image = GridUnit.images.get("hover");
                     } else {
                         image = GridUnit.images.get("normal");
@@ -66,8 +66,8 @@ public class GridUnit {
 
     public int adjacentMineCount() {
         int count = 0;
-        for (GridUnit unit : _adjacentUnits) {
-            if (unit.mine) {
+        for (GridUnit unit : adjacentGridUnits) {
+            if (unit.isMined) {
                 count++;
             }
         }
@@ -75,49 +75,46 @@ public class GridUnit {
     }
 
     private void exposeMines() {
-        if (exposed) {
+        if (isExposed) {
             return;
         }
 
-        exposed = true;
-        if (mine) {
-            checked = true;
+        isExposed = true;
+        if (isMined) {
+            isChecked = true;
         }
 
-        for (GridUnit unit : _adjacentUnits) {
-            if (!unit.exposed) {
+        for (GridUnit unit : adjacentGridUnits) {
+            if (!unit.isExposed) {
                 unit.exposeMines();
             }
         }
     }
 
     private void check() {
-        checked = true;
+        isChecked = true;
 
         if (adjacentMineCount() > 0) {
             return;
         }
 
-        for (GridUnit unit : _adjacentUnits) {
-            // System.out.println(u + " | " + getNearbyMineCount());
-            // System.out.println(unit + " | " + adjacentMineCount());
-
-            if (!unit.checked) {
+        for (GridUnit unit : adjacentGridUnits) {
+            if (!unit.isChecked) {
                 unit.check();
             }
         }
     }
 
-    public void checkPress() {
-        if (!checked && !flagged) {
-            pressed = true;
+    public void checkPressed() {
+        if (!isChecked && !isFlagged) {
+            isPressed = true;
         }
     }
 
-    public void checkRelease() {
-        pressed = false;
-        if (!flagged) {
-            if (mine) {
+    public void checkReleased() {
+        isPressed = false;
+        if (!isFlagged) {
+            if (isMined) {
                 exposeMines();
             } else {
                 check();
@@ -125,13 +122,13 @@ public class GridUnit {
         }
     }
 
-    public void flagPress() {
+    public void flagPressed() {
         // ignore
     }
 
-    public void flagRelease() {
-        if (!checked) {
-            flagged = !flagged;
+    public void flagReleased() {
+        if (!isChecked) {
+            isFlagged = !isFlagged;
         }
     }
 }
