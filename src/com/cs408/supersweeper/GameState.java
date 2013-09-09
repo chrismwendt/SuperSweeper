@@ -2,7 +2,6 @@ package com.cs408.supersweeper;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Collections;
@@ -70,7 +69,7 @@ public class GameState {
         return x >= 0 && x < gridWidth && y >= 0 && y < gridHeight;
     }
 
-    public void populateMines(Point first) {
+    public void populateMines() {
         GridUnit[] units = (GridUnit[]) Utility.flatten(_grid);
         Collections.shuffle(Arrays.asList(units));
         for (int i = 0; i < _numMines; i++) {

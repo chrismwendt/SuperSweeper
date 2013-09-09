@@ -2,7 +2,6 @@ package com.cs408.supersweeper;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -93,16 +92,24 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         updateStatusLabel();
     }
 
-    /** Listeners */
-    public void mousePressed(MouseEvent e) {
+    private GridUnit getGridUnit(MouseEvent e) {
         int x = e.getX() / tempUnit.width;
         int y = e.getY() / tempUnit.height;
 
         if (x >= gridWidth || y >= gridHeight) {
+            return null;
+        }
+
+        return _gs.getGridUnit(x, y);
+    }
+
+    /** Listeners */
+    public void mousePressed(MouseEvent e) {
+        GridUnit gridUnit = getGridUnit(e);
+        if (gridUnit == null) {
             return;
         }
 
-        GridUnit gridUnit = _gs.getGridUnit(x, y);
         if (SwingUtilities.isLeftMouseButton(e)) {
             gridUnit.checkPressed();
             previouslyPressedGridUnit = gridUnit;
@@ -114,19 +121,15 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     }
 
     public void mouseReleased(MouseEvent e) {
-        int x = e.getX() / tempUnit.width;
-        int y = e.getY() / tempUnit.height;
-
-        if (x >= gridWidth || y >= gridHeight) {
+        GridUnit gridUnit = getGridUnit(e);
+        if (gridUnit == null) {
             return;
         }
-
-        GridUnit gridUnit = _gs.getGridUnit(x, y);
 
         if (_firstClick && !SwingUtilities.isRightMouseButton(e)) {
             do {
                 _gs.resetGrid();
-                _gs.populateMines(new Point(x, y));
+                _gs.populateMines();
             } while (gridUnit.isMined);
             _firstClick = false;
         }
@@ -146,14 +149,10 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             return;
         }
 
-        int x = e.getX() / tempUnit.width;
-        int y = e.getY() / tempUnit.height;
-
-        if (x >= gridWidth || y >= gridHeight) {
+        GridUnit gridUnit = getGridUnit(e);
+        if (gridUnit == null) {
             return;
         }
-
-        GridUnit gridUnit = _gs.getGridUnit(x, y);
 
         if (SwingUtilities.isLeftMouseButton(e)) {
             previouslyPressedGridUnit.checkCancelled();
