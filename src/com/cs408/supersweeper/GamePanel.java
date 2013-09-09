@@ -114,7 +114,6 @@ public class GamePanel extends JPanel implements MouseListener {
             return;
         }
 
-        boolean clicked = _gs.getState(x, y);
         GridUnit gridUnit = _gs.getGridUnit(x, y);
 
         if (_firstClick && !SwingUtilities.isRightMouseButton(e)) {

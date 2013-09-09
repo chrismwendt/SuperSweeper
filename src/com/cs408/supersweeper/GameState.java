@@ -54,11 +54,6 @@ public class GameState {
         }
     }
 
-    // TODO: so far only says if has mine or not. needs to return state.
-    public boolean getState(int x, int y) {
-        return _grid[x][y].isMined;
-    }
-
     public GridUnit getGridUnit(int x, int y) {
         return _grid[x][y];
     }
