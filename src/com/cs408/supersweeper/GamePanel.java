@@ -87,7 +87,6 @@ public class GamePanel extends JPanel implements MouseListener {
 
     /** Listeners */
     public void mousePressed(MouseEvent e) {
-
         int x = e.getX() / tempUnit.width;
         int y = e.getY() / tempUnit.height;
 
@@ -98,7 +97,7 @@ public class GamePanel extends JPanel implements MouseListener {
         GridUnit gridUnit = _gs.getGridUnit(x, y);
         gridUnit._state = GridUnit.State.PRESSED;
 
-        paint(getGraphics());
+        repaint();
         updateStatusLabel();
     }
 
@@ -129,7 +128,7 @@ public class GamePanel extends JPanel implements MouseListener {
             _gs.exposeNumber(gridUnit);
         }
 
-        paint(getGraphics());
+        repaint();
         updateStatusLabel();
     }
 
