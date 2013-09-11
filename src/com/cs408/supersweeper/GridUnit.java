@@ -100,7 +100,7 @@ public class GridUnit {
         }
 
         for (GridUnit unit : adjacentGridUnits) {
-            if (!unit.isChecked) {
+            if (!unit.isChecked && !unit.isFlagged) {
                 unit.check();
             }
         }

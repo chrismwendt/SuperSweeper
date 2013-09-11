@@ -130,7 +130,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     private GridUnit getGridUnit(MouseEvent e) {
         int x = e.getX() / GridUnit.sample.getWidth();
         int y = (e.getY() - this.labelPanel.getHeight()) / GridUnit.sample.getHeight();
-        System.out.println(this.labelPanel.getHeight());
 
         if (x >= gridWidth || y >= gridHeight || x < 0 || y < 0) {
             return null;
@@ -166,12 +165,10 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     public void mouseReleased(MouseEvent e) {
         GridUnit gridUnit = getGridUnit(e);
         if (gridUnit == null) {
-            if (SwingUtilities.isLeftMouseButton(e)) {
-                previouslyPressedGridUnit.checkReleased();
-                previouslyPressedGridUnit = null;
-            } else if (SwingUtilities.isRightMouseButton(e)) {
-                previouslyPressedGridUnit.flagReleased();
+            if (previouslyPressedGridUnit != null) {
+                previouslyPressedGridUnit.checkCancelled();
             }
+            stateUpdated();
             return;
         }
 
