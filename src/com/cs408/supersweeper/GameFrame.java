@@ -6,96 +6,93 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 public class GameFrame implements ActionListener {
 
-   private JFrame frame;
-   private JMenuItem mntmNewGame;
-   private JMenuItem mntmLoginlogout;
-   private JMenuItem mntmMainMenu;
-   private JMenuItem mntmExit;
+    private JFrame frame;
+    private JMenuItem mntmNewGame;
+    private JMenuItem mntmLoginlogout;
+    private JMenuItem mntmMainMenu;
+    private JMenuItem mntmExit;
 
-   /**
-    * Launch the application.
-    */
+    /**
+     * Launch the application.
+     */
     public static void main(String[] args) {
         new GameFrame();
-      
-      
-   }
 
-   /**
-    * Create the application.
+    }
+
+    /**
+     * Create the application.
      * 
- * @throws IOException 
-    */
+     * @throws IOException
+     */
     public GameFrame() {
-      initialize();
+        initialize();
         frame.setVisible(true);
-   }
+    }
 
-   /**
-    * Initialize the contents of the frame.
+    /**
+     * Initialize the contents of the frame.
      * 
- * @throws IOException 
-    */
+     * @throws IOException
+     */
     private void initialize() {
-      frame = new JFrame();
-      frame.setBounds(100, 100, 450, 300);
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      frame.getContentPane().setLayout(new GridBagLayout());
-      GridBagConstraints c = new GridBagConstraints();
-      
-      GamePanel gp = new GamePanel("001.properties"); //load first level right away...
-      // TODO: Remove hard coded dimensions
-      frame.setMinimumSize(new Dimension(300, 300));
-      c.gridy = 0;
-      frame.getContentPane().add(gp, c);
-      frame.pack();
-      
-      JMenuBar menuBar = new JMenuBar();
-      frame.setJMenuBar(menuBar);
-      
-      JMenu mnFile = new JMenu("File");
-      menuBar.add(mnFile);
-      
-      mntmNewGame = new JMenuItem("New Game");
-      mnFile.add(mntmNewGame);
-      mntmNewGame.addActionListener(this);
-      
-      mntmLoginlogout = new JMenuItem("Login/Logout");
-      mnFile.add(mntmLoginlogout);
-      mntmLoginlogout.addActionListener(this);
-      
-      mntmMainMenu = new JMenuItem("Main Menu");
-      mnFile.add(mntmMainMenu);
-      mntmMainMenu.addActionListener(this);
-      
-      mntmExit = new JMenuItem("Exit");
-      mnFile.add(mntmExit);
-      mntmExit.addActionListener(this);
-   }
+        frame = new JFrame();
+        frame.setBounds(100, 100, 450, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
 
-public void actionPerformed(ActionEvent e) {
-	Object action = e.getSource();
-	
-	//TODO: add implementation to menu items
-	if(action == mntmNewGame){
-		
-	} else if(action == mntmLoginlogout){
-		
-	} else if(action == mntmMainMenu){
-		
-	} else if(action == mntmExit){
-		frame.dispose();
-		System.exit(0);
-	}
-}
- 
+        GamePanel gp = new GamePanel("001.properties"); // load first level right away...
+        // TODO: Remove hard coded dimensions
+        frame.setMinimumSize(new Dimension(300, 300));
+        c.gridy = 0;
+        frame.getContentPane().add(gp, c);
+        frame.pack();
+
+        JMenuBar menuBar = new JMenuBar();
+        frame.setJMenuBar(menuBar);
+
+        JMenu mnFile = new JMenu("File");
+        menuBar.add(mnFile);
+
+        mntmNewGame = new JMenuItem("New Game");
+        mnFile.add(mntmNewGame);
+        mntmNewGame.addActionListener(this);
+
+        mntmLoginlogout = new JMenuItem("Login/Logout");
+        mnFile.add(mntmLoginlogout);
+        mntmLoginlogout.addActionListener(this);
+
+        mntmMainMenu = new JMenuItem("Main Menu");
+        mnFile.add(mntmMainMenu);
+        mntmMainMenu.addActionListener(this);
+
+        mntmExit = new JMenuItem("Exit");
+        mnFile.add(mntmExit);
+        mntmExit.addActionListener(this);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        Object action = e.getSource();
+
+        // TODO: add implementation to menu items
+        if (action == mntmNewGame) {
+
+        } else if (action == mntmLoginlogout) {
+
+        } else if (action == mntmMainMenu) {
+
+        } else if (action == mntmExit) {
+            frame.dispose();
+            System.exit(0);
+        }
+    }
+
 }

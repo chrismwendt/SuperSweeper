@@ -1,7 +1,5 @@
 package com.cs408.supersweeper;
 
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +26,7 @@ public class GridUnit {
         for (int i = 1; i <= 8; i++) {
             GridUnit.images.put(String.valueOf(i), Utility.imageFromFilename("images/grid_unit_" + i + ".png"));
         }
-        sample = GridUnit.images.get("normal");
+        GridUnit.sample = GridUnit.images.get("normal");
     }
 
     /** Constructor */
@@ -80,7 +78,7 @@ public class GridUnit {
         if (isMined) {
             isChecked = true;
         }
-        
+
         stateChanged();
 
         for (GridUnit unit : adjacentGridUnits) {
@@ -92,7 +90,7 @@ public class GridUnit {
 
     private void check() {
         isChecked = true;
-        
+
         stateChanged();
 
         if (adjacentMineCount() > 0) {
@@ -110,7 +108,7 @@ public class GridUnit {
         if (!isChecked && !isFlagged) {
             isPressed = true;
         }
-        
+
         stateChanged();
     }
 
@@ -123,13 +121,13 @@ public class GridUnit {
                 check();
             }
         }
-        
+
         stateChanged();
     }
 
     public void flagPressed() {
         // ignore
-        
+
         stateChanged();
     }
 
@@ -137,13 +135,13 @@ public class GridUnit {
         if (!isChecked) {
             isFlagged = !isFlagged;
         }
-        
+
         stateChanged();
     }
 
     public void checkCancelled() {
         isPressed = false;
-        
+
         stateChanged();
     }
 
