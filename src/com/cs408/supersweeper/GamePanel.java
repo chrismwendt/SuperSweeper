@@ -2,19 +2,25 @@ package com.cs408.supersweeper;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Properties;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class GamePanel extends JPanel implements MouseListener, MouseMotionListener {
+public class GamePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
 
     private static final long serialVersionUID = 1L;
     private GameState _gs;
@@ -24,11 +30,16 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     private boolean _firstClick = true;
     private GridUnit previouslyPressedGridUnit = null;
 
-    /** Constructor */
+
     private JPanel gridPanel = new JPanel();
     private JPanel labelPanel = new JPanel();
     private JPanel powerUpPanel = new JPanel();
     private JLabel statusLabel = new JLabel();
+    private Powerup missile, extralife, metalDetector;
+    private JButton help;
+    private String helpMessage = "Powerups are a powerful tool for winning SuperSweeper.  Their point value will deduct from your points.\n\n" +
+    "Extra Lives will save you if you click on a mine.\nThe Metal Detector will allow you to see a small part of the board for a second.\n"
+    + "The Missile will destroy a part of the board, safely detonating all mines.";
 
     /** Constructor */
     public GamePanel(String propFileName) {
@@ -38,6 +49,24 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         labelPanel.add(statusLabel);
 
         this.add(gridPanel, BorderLayout.CENTER);
+        powerUpPanel.setLayout(new FlowLayout());
+        
+        extralife = new Powerup("Extra Life", 100);
+        powerUpPanel.add(extralife);
+        extralife.addActionListener(this);
+        
+        metalDetector = new Powerup("Metal Detector", 150);
+        powerUpPanel.add(metalDetector);
+        metalDetector.addActionListener(this);
+        
+        missile = new Powerup("Missile", 200);
+        powerUpPanel.add(missile);
+        missile.addActionListener(this);
+        
+        help = new JButton("?");
+        powerUpPanel.add(help);
+        help.addActionListener(this);
+        
         this.add(powerUpPanel, BorderLayout.SOUTH);
 
         // Fetch the specified properties file (throws ioexception if its not
@@ -218,5 +247,24 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
     @Override
     public void mouseMoved(MouseEvent arg0) {
+    }
+
+
+    public void actionPerformed(ActionEvent e) {
+        Object action = e.getSource();
+        
+        if(action == help) {
+            JOptionPane.showMessageDialog(null, helpMessage, "Help", JOptionPane.PLAIN_MESSAGE);
+        } else if(action == missile){
+            // GamePanel.points = GamePanel.points - missile.getPrice();
+            
+        } else if(action == metalDetector){
+            // GamePanel.points = GamePanel.points - missile.getPrice();
+            
+        } else if(action == extralife){
+            // GamePanel.points = GamePanel.points - missile.getPrice();
+            
+        }
+        
     }
 }
