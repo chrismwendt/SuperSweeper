@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
 
@@ -29,12 +30,15 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     private int gridWidth;
     private boolean _firstClick = true;
     private GridUnit previouslyPressedGridUnit = null;
+    private int time = 0;
 
 
     private JPanel gridPanel = new JPanel();
     private JPanel labelPanel = new JPanel();
     private JPanel powerUpPanel = new JPanel();
     private JLabel statusLabel = new JLabel();
+    private JLabel timeLabel = new JLabel();
+    private Timer timeDelay;
     private Powerup missile, extralife, metalDetector;
     private JButton help;
     private String helpMessage = "Powerups are a powerful tool for winning SuperSweeper.  Their point value will deduct from your points.\n\n" +
@@ -47,6 +51,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         setLayout(new BorderLayout());
         this.add(labelPanel, BorderLayout.NORTH);
         labelPanel.add(statusLabel);
+        labelPanel.add(timeLabel);
 
         this.add(gridPanel, BorderLayout.CENTER);
         powerUpPanel.setLayout(new FlowLayout());
@@ -90,6 +95,9 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         int w = GridUnit.sample.getWidth();
         int h = GridUnit.sample.getHeight();
         statusLabel.setText("Flags: 0");
+        time = (int)_gs.getTime();
+        timeLabel.setText(time/60 + ":" + String.format("%02d", time%60));
+        timeDelay = new Timer(1000, this);
 
         // TODO: Get rid of hard coded height
         setPreferredSize(new Dimension(_gs.gridWidth * w, _gs.gridHeight * h + 40 + labelPanel.getHeight() + powerUpPanel.getHeight()));
@@ -196,6 +204,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
             do {
                 _gs.resetGrid();
                 _gs.populateMines();
+                timeDelay.start();
             } while (gridUnit.isMined);
             _firstClick = false;
         }
@@ -264,6 +273,14 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
         } else if(action == extralife){
             // GamePanel.points = GamePanel.points - missile.getPrice();
             
+        } else if(action == timeDelay){
+            if(--time == 0){
+                timeDelay.stop();
+                timeLabel.setText("0:00");
+                //Game Over
+            } else {
+                timeLabel.setText(time/60 + ":" + String.format("%02d", time%60));
+            }
         }
         
     }

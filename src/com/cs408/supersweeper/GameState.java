@@ -77,6 +77,10 @@ public class GameState {
             units[i].isMined = true;
         }
     }
+    
+    public double getTime() {
+        return _time;
+    }
 
     public int getFlagCount() {
         int count = 0;
