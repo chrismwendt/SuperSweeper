@@ -1,46 +1,33 @@
 package com.cs408.supersweeper;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Panel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMotionListener {
-    
-    private static final long serialVersionUID = -8348029708739390765L;
-    private GameFrame _gf;
+public class GridPanel extends Panel implements MouseListener, MouseMotionListener {
+
+    private static final long serialVersionUID = 7300495993169526438L;
     private GameState _gs;
+    private GamePanel _gp;
+    private boolean _firstClick = true;
     private GridUnit _previouslyPressedGridUnit = null;
-    private BufferedImage _previousImage;
-   
-    public LevelSelectPanel (GameFrame gf) {
-        this._gf = gf;
-        // Make a new 3x3 GameState for level selection and populate it with appropriate images
-        _gs = new GameState(0, 1, 3, 3, 0);
-        GridUnit[][] grid = _gs.getGrid();
-        for(int x = 0; x < 3; x++) {
-            for(int y = 0; y < 3; y++){
-                grid[x][y].setImage(GridUnit.images.get(String.valueOf(x + y*3 + 1)));
-            }
-        }
-        grid[2][2].setImage(GridUnit.images.get("mine"));
-
-        //Set Min Size for this container panel
-        int w = GridUnit.sample.getWidth();
-        int h = GridUnit.sample.getHeight();
-        setPreferredSize(new Dimension(_gs.getGridWidth() * w, _gs.getGridHeight() * h ));
-
+    
+    /** Constructor */
+    public GridPanel(GameState gs, GamePanel gp) {
+        this._gs = gs;
+        this._gp = gp;
         
         //Add mouse listeners
         addMouseListener(this);
         addMouseMotionListener(this);
     }
-
+    
+    
     /** Internal Methods */
     private GridUnit getGridUnit(MouseEvent e) {
         int x = e.getX() / GridUnit.sample.getWidth();
@@ -53,9 +40,22 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
         return _gs.getGridUnit(x, y);
     }
     
+    private void stateRedraw() {
+        repaint();
+        ((GamePanel) this.getParent()).updateStatusLabel();
+    }
+    
+    
+    /** Setters */
+    public void resetFirstClick() {
+        this._firstClick = true;
+        this._previouslyPressedGridUnit = null;
+        stateRedraw();
+    }
+    
+    
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
         GridUnit[][] grid = _gs.getGrid();
         BufferedImage unit = new BufferedImage(GridUnit.sample.getWidth(), GridUnit.sample.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics unit_graphics = unit.getGraphics();
@@ -73,14 +73,15 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
     @Override
     public void mousePressed(MouseEvent e) {
         GridUnit gridUnit = getGridUnit(e);
-        if (gridUnit == null) {
+        if (gridUnit == null || _gs.isGameOver()) {
             return;
         }
 
         if (SwingUtilities.isLeftMouseButton(e)) {
+            _gs.checkPressed(gridUnit);
             _previouslyPressedGridUnit = gridUnit;
-            _previousImage = gridUnit.getImage();
-            gridUnit.setImage(GridUnit.images.get("normal"));
+        } else if (SwingUtilities.isRightMouseButton(e)) {
+            _gs.flagPressed(gridUnit);
         }
 
         repaint();
@@ -88,38 +89,44 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if(_gs.isGameOver())
+            return;
         GridUnit gridUnit = getGridUnit(e);
         if (gridUnit == null) {
             if (_previouslyPressedGridUnit != null) {
-                _previouslyPressedGridUnit.setImage(_previousImage);
+                _gs.checkCancelled(_previouslyPressedGridUnit);
             }
-            repaint();
+            stateRedraw();
             return;
         }
 
-        if (SwingUtilities.isLeftMouseButton(e)) {
-            //Start appropriate game level here
-            int x = e.getX() / GridUnit.sample.getWidth();
-            int y = e.getY() / GridUnit.sample.getHeight();
-            if(x == 2  && y == 2) {
-                //Bonus Level!!
-                _gf.startLevel("bonus.properties");
-            }
-            else {
-                _gf.startLevel("00" + (x + y*3 + 1) +".properties");
-            }
-            
-            //Unreachable Code
-            gridUnit.setImage(_previousImage);
-            _previouslyPressedGridUnit = null;
+        if (_firstClick && SwingUtilities.isLeftMouseButton(e)) {
+            do {
+                _gs.removeMines();
+                _gs.populateMines();
+                _gp.startTimer();
+            } while (gridUnit.isMined);
+            _firstClick = false;
         }
 
-        repaint();
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            _gs.checkReleased(gridUnit);
+            _previouslyPressedGridUnit = null;
+            if(_gs.hasWon() && !_gs.isGameOver()) {
+                stateRedraw();
+                //TODO: game economics
+               _gs.endGame(_gs.getLevelScoreBonus());
+            }
+        } else if (SwingUtilities.isRightMouseButton(e)) {
+            _gs.flagReleased(gridUnit);
+        }
+
+        stateRedraw();
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (_previouslyPressedGridUnit == null) {
+        if (_previouslyPressedGridUnit == null || _gs.isGameOver()) {
             return;
         }
 
@@ -129,28 +136,31 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
         }
 
         if (SwingUtilities.isLeftMouseButton(e)) {
-            _previouslyPressedGridUnit.setImage(_previousImage);
+            _gs.checkCancelled(_previouslyPressedGridUnit);
+            _gs.checkPressed(gridUnit);
             _previouslyPressedGridUnit = gridUnit;
-            _previousImage = gridUnit.getImage();
-            gridUnit.setImage(GridUnit.images.get("normal"));
         }
 
-        repaint();
+        stateRedraw();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
+
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
+
     }
 
     @Override
     public void mouseMoved(MouseEvent arg0) {
     }
+
 }
