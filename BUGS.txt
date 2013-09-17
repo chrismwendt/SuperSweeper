@@ -7,3 +7,4 @@
 7) Didnt add properties files to build path
 8) PopulateMines --> after check if firstClick, no i-- before continue
 9) Click and drag mouse from one grid unit to another, original grid unit stays pressed
+10) If reset game, timer doesn't start over. 

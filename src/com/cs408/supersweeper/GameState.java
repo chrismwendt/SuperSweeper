@@ -50,6 +50,7 @@ public class GameState {
     /** Game Logic */
     public void endGame(int pointsToAdd) {
         _gameIsOver = true;
+        
         if(pointsToAdd == 0) {
             Utility.infoBox("Boom! You Lost :(", "");
         }

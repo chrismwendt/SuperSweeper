@@ -88,6 +88,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void restartLevel() {
+        resetTimer();
         _gs.resetGrid();
         gridPanel.resetFirstClick();
         repaint();
@@ -99,6 +100,12 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void startTimer() {
         this.timeDelay.start();
+    }
+    
+    public void resetTimer() {
+        this.timeDelay.stop();
+        time = (int)_gs.getTime();
+        timeLabel.setText(time/60 + ":" + String.format("%02d", time%60));
     }
     
     
@@ -125,6 +132,8 @@ public class GamePanel extends JPanel implements ActionListener {
                 //TODO: Game Economics
                 _gs.endGame(0);
                 
+            } else if(_gs.isGameOver()) {
+                timeDelay.stop();
             } else {
                 timeLabel.setText(time/60 + ":" + String.format("%02d", time%60));
             }
