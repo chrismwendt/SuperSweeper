@@ -33,7 +33,7 @@ public class Utility {
         GridUnit[] flattened = new GridUnit[objects.length * objects[0].length];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                flattened[y * width + x] = objects[y][x];
+                flattened[y * width + x] = objects[x][y];
             }
         }
 
