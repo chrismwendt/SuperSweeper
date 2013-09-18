@@ -161,6 +161,11 @@ public class GameState {
         }
 
         stateChanged(gu);
+        
+        if(hasWon() && !isGameOver()) {
+            //TODO: game economics
+           endGame(getLevelScoreBonus());
+        }
     }
 
     public void flagPressed(GridUnit gu) {

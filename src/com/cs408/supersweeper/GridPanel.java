@@ -112,11 +112,6 @@ public class GridPanel extends Panel implements MouseListener, MouseMotionListen
         if (SwingUtilities.isLeftMouseButton(e)) {
             _gs.checkReleased(gridUnit);
             _previouslyPressedGridUnit = null;
-            if(_gs.hasWon() && !_gs.isGameOver()) {
-                stateRedraw();
-                //TODO: game economics
-               _gs.endGame(_gs.getLevelScoreBonus());
-            }
         } else if (SwingUtilities.isRightMouseButton(e)) {
             _gs.flagReleased(gridUnit);
         }
