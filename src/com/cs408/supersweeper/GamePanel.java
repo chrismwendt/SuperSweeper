@@ -120,15 +120,15 @@ public class GamePanel extends JPanel implements ActionListener {
         if (!_gs.isGameOver()){
             if(action == help) {
                 JOptionPane.showMessageDialog(null, helpMessage, "Help", JOptionPane.PLAIN_MESSAGE);
-            } else if(action == missile){
+            } else if(action == missile && _gs.checkScore(missile.getPrice())){
                 _gs.subtractScore(missile.getPrice());
                 gridPanel.setPowerup(true);
-            } else if(action == metalDetector){
+            } else if(action == metalDetector && _gs.checkScore(metalDetector.getPrice())){
                 _gs.subtractScore(metalDetector.getPrice());
                 gridPanel.setPowerup(true);
-            } else if(action == extralife){
+            } else if(action == extralife && _gs.checkScore(extralife.getPrice())){
                 _gs.subtractScore(extralife.getPrice());
-                
+                _gs.setExtraLife(true);
             }
         }
         if(action == timeDelay){
@@ -137,7 +137,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 timeDelay.stop();
                 timeLabel.setText("0:00");
                 //TODO: Game Economics
-                _gs.endGame(0);
+                _gs.endGame(-_gs.getLevelScoreBonus());
                 
             } else if(_gs.isGameOver()) {
                 timeDelay.stop();

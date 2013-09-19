@@ -16,6 +16,7 @@ public class GameState {
     private int _score;
     private boolean _gameIsOver = false;
     private JLabel scoreLabel;
+    private boolean _extralife = false;
 
     /** Constructors */
     public GameState(double time, int numMines, int gridWidth, int gridHeight, int score, JLabel scorelabel) {
@@ -58,15 +59,22 @@ public class GameState {
     public void endGame(int pointsToAdd) {
         _gameIsOver = true;
         
-        if(pointsToAdd == 0) {
+        if(pointsToAdd <= 0) {
             Utility.infoBox("Boom! You Lost :(", "");
         }
         else {
             Utility.infoBox("Hooray! You won " + pointsToAdd + " points :D!", "");
-            
+            addPoints(pointsToAdd);
         }
     }
     
+    private void addPoints(int pointsToAdd) {
+        _score += pointsToAdd;
+        updateScore();
+    }
+
+
+
     public void resetGrid() {
         for (int x = 0; x < _gridWidth; x++) {
             for (int y = 0; y < _gridHeight; y++) {
@@ -135,12 +143,13 @@ public class GameState {
 
     private void check(GridUnit gu) {
         gu.isChecked = true;
-        _score += 10;
 
         stateChanged(gu);
-
         if (gu.adjacentMineCount() > 0) {
+            addPoints(gu.adjacentMineCount()*10);
             return;
+        } else {
+            addPoints(2);
         }
 
         for (GridUnit unit : gu.adjacentGridUnits) {
@@ -161,12 +170,18 @@ public class GameState {
     public void checkReleased(GridUnit gu) {
         gu.isPressed = false;
         if (!gu.isFlagged) {
-            if (gu.isMined) {
-                subtractScore(100);
+            if (gu.isMined && !_extralife) {
+                subtractScore(_scoreBonus);
                 exposeMines(gu);
                 endGame(0);
             } else {
-                check(gu);
+                if (_extralife && gu.isMined) {
+                    gu.isChecked = true;
+                    stateChanged(gu);
+                } else {
+                    check(gu);
+                }
+                _extralife = false;
             }
         }
 
@@ -205,11 +220,15 @@ public class GameState {
     
     public void subtractScore(int sub) {
         _score -= sub;
-        if(_score < 0){
+        if(_score <= 0){
             _score = 0;
         }
         
         updateScore();
+    }
+    
+    public boolean checkScore(int check){
+        return _score >= check;
     }
     
     
@@ -281,5 +300,9 @@ public class GameState {
     public void setScore(int i) {
         _score = i;
         updateScore();
+    }
+    
+    public void setExtraLife(boolean b){
+        _extralife = b;
     }
 }
