@@ -25,6 +25,9 @@ public class GameState {
         this._gridWidth = gridWidth;
         this._scoreBonus = score;
         this.scoreLabel = scorelabel;
+        if(scorelabel != null) {
+            _score = Integer.parseInt(scorelabel.getText().substring(7));
+        }
 
         _grid = new GridUnit[gridWidth][gridHeight];
 
@@ -159,6 +162,7 @@ public class GameState {
         gu.isPressed = false;
         if (!gu.isFlagged) {
             if (gu.isMined) {
+                subtractScore(100);
                 exposeMines(gu);
                 endGame(0);
             } else {
@@ -197,7 +201,16 @@ public class GameState {
     public void updateScore(){
         scoreLabel.setText("Score: " + _score);
     }
-
+    
+    
+    public void subtractScore(int sub) {
+        _score -= sub;
+        if(_score < 0){
+            _score = 0;
+        }
+        
+        updateScore();
+    }
     
     
     /** Getters */

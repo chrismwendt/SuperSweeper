@@ -117,18 +117,21 @@ public class GamePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object action = e.getSource();
         
-        if(action == help) {
-            JOptionPane.showMessageDialog(null, helpMessage, "Help", JOptionPane.PLAIN_MESSAGE);
-        } else if(action == missile){
-            // GamePanel.points = GamePanel.points - missile.getPrice();
-            gridPanel.setPowerup(true);
-        } else if(action == metalDetector){
-            // GamePanel.points = GamePanel.points - missile.getPrice();
-            gridPanel.setPowerup(true);
-        } else if(action == extralife){
-            // GamePanel.points = GamePanel.points - missile.getPrice();
-            
-        } else if(action == timeDelay){
+        if (!_gs.isGameOver()){
+            if(action == help) {
+                JOptionPane.showMessageDialog(null, helpMessage, "Help", JOptionPane.PLAIN_MESSAGE);
+            } else if(action == missile){
+                _gs.subtractScore(missile.getPrice());
+                gridPanel.setPowerup(true);
+            } else if(action == metalDetector){
+                _gs.subtractScore(metalDetector.getPrice());
+                gridPanel.setPowerup(true);
+            } else if(action == extralife){
+                _gs.subtractScore(extralife.getPrice());
+                
+            }
+        }
+        if(action == timeDelay){
             if(--time == 0){
                 //Game Over
                 timeDelay.stop();
