@@ -21,7 +21,7 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
     public LevelSelectPanel (GameFrame gf) {
         this._gf = gf;
         // Make a new 3x3 GameState for level selection and populate it with appropriate images
-        _gs = new GameState(0, 1, 3, 3, 0);
+        _gs = new GameState(0, 1, 3, 3, 0, null);
         GridUnit[][] grid = _gs.getGrid();
         for(int x = 0; x < 3; x++) {
             for(int y = 0; y < 3; y++){

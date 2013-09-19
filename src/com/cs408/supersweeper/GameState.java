@@ -2,6 +2,7 @@ package com.cs408.supersweeper;
 
 import java.util.Arrays;
 import java.util.Collections;
+import javax.swing.JLabel;
 
 public class GameState {
 
@@ -12,15 +13,18 @@ public class GameState {
     private int _gridWidth;
     private int _gridHeight;
     private int _scoreBonus;
+    private int _score;
     private boolean _gameIsOver = false;
+    private JLabel scoreLabel;
 
     /** Constructors */
-    public GameState(double time, int numMines, int gridWidth, int gridHeight, int score) {
+    public GameState(double time, int numMines, int gridWidth, int gridHeight, int score, JLabel scorelabel) {
         this._time = time;
         this._numMines = numMines;
         this._gridHeight = gridHeight;
         this._gridWidth = gridWidth;
         this._scoreBonus = score;
+        this.scoreLabel = scorelabel;
 
         _grid = new GridUnit[gridWidth][gridHeight];
 
@@ -104,6 +108,7 @@ public class GameState {
         } else {
             gu.setImage(GridUnit.images.get("normal"));
         }
+        updateScore();
     }
     
     private void exposeMines(GridUnit gu) {
@@ -127,6 +132,7 @@ public class GameState {
 
     private void check(GridUnit gu) {
         gu.isChecked = true;
+        _score += 10;
 
         stateChanged(gu);
 
@@ -187,6 +193,10 @@ public class GameState {
 
         stateChanged(gu);
     }
+    
+    public void updateScore(){
+        scoreLabel.setText("Score: " + _score);
+    }
 
     
     
@@ -205,6 +215,10 @@ public class GameState {
     
     public GridUnit getGridUnit(int x, int y) {
         return _grid[x][y];
+    }
+    
+    public int getScore() {
+        return _score;
     }
     
     public double getTime() {
@@ -247,5 +261,12 @@ public class GameState {
         if(count >= (_gridWidth*_gridHeight) - _numMines)
             return true;
         return false;
+    }
+
+
+
+    public void setScore(int i) {
+        _score = i;
+        updateScore();
     }
 }

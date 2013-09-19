@@ -7,7 +7,10 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -21,8 +24,10 @@ public class GameFrame implements ActionListener {
     private JMenuItem mntmRestartLevel;
     private JMenuItem mntmLevelSelect;
     private JMenuItem mntmExit;
+    private JMenuItem mntmResetScore;
     private JLabel lblScore;
-    
+    private Properties _prop = new Properties();
+    private int userScore = 0;
     private LevelSelectPanel lsp;
     private GamePanel gp;
 
@@ -75,14 +80,20 @@ public class GameFrame implements ActionListener {
         mnOptions.add(mntmLevelSelect);
         mntmLevelSelect.addActionListener(this);
 
-        mntmRestartLevel = new JMenuItem("RestartLevel");
+        mntmRestartLevel = new JMenuItem("Restart Level");
         mnOptions.add(mntmRestartLevel);
         mntmRestartLevel.addActionListener(this);
+        
+        mntmResetScore = new JMenuItem("Reset Score");
+        mnOptions.add(mntmResetScore);
+        mntmResetScore.addActionListener(this);
 
         mntmExit = new JMenuItem("Exit");
         mnOptions.add(mntmExit);
         
-        lblScore = new JLabel("Score: 0 ");
+        lblScore = new JLabel();
+        userScore = loadSavedScore();
+        lblScore.setText("Score: " + userScore);
         lblScore.setHorizontalAlignment(SwingConstants.RIGHT);
         menuBar.add(lblScore, BorderLayout.EAST);
         mntmExit.addActionListener(this);
@@ -105,11 +116,46 @@ public class GameFrame implements ActionListener {
 
         }  else if (action == mntmLevelSelect) {
             gotoLevelSelect();
-
         } else if (action == mntmExit) {
+            if (gp != null){
+                getScore();
+            }
+            saveScore();
             frame.dispose();
             System.exit(0);
+        } else if (action == mntmResetScore) {
+            if (gp == null){
+                userScore = 0;
+                lblScore.setText("Score: " + userScore);
+            } else {
+                gp.getGameState().setScore(0);
+            }
         }
+    }
+    
+    public int loadSavedScore() {
+        try {
+            _prop.load(this.getClass().getResourceAsStream("/userProgress.properties"));
+        } catch (Exception e) {
+            System.err.println("Could not locate Properties File: userProgress score");
+            System.exit(1);
+        }  
+        return Integer.parseInt(_prop.getProperty("score"));
+    }
+    
+    public void saveScore() {
+        //TODO: How to save the score when someone exits program another way other than hitting exit option
+        _prop.setProperty("score", Integer.toString(userScore));
+        try {
+            _prop.store(new FileOutputStream("user_data/userProgress.properties"), null);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } 
+    }
+    
+    public void getScore() {
+        userScore = gp.getGameState().getScore();
     }
 
     public void startLevel(String propertiesFile) {  
@@ -120,7 +166,7 @@ public class GameFrame implements ActionListener {
         frame.remove(lsp);
         
         //Add appropriate GamePanel
-        gp = new GamePanel(propertiesFile);
+        gp = new GamePanel(propertiesFile, lblScore);
         frame.getContentPane().add(gp, c);
         
         resizeFrame();
@@ -130,6 +176,8 @@ public class GameFrame implements ActionListener {
         if(gp == null) {
             return;
         }
+        
+        getScore();
         
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;

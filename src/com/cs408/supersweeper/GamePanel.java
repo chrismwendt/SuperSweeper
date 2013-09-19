@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
 
     /** Constructor */
-    public GamePanel(String propFileName) {
+    public GamePanel(String propFileName, JLabel label) {
             
         // Fetch the specified properties file (throws ioexception if its not there)
         try {
@@ -44,7 +44,7 @@ public class GamePanel extends JPanel implements ActionListener {
         Utility.validateProperties(_prop);
         
         // Make a new GameState from the specified properties file
-        _gs = new GameState(Double.parseDouble(_prop.getProperty("time")), Integer.parseInt(_prop.getProperty("numMines")), Integer.parseInt(_prop.getProperty("gridHeight")), Integer.parseInt(_prop.getProperty("gridWidth")), Integer.parseInt(_prop.getProperty("score")));
+        _gs = new GameState(Double.parseDouble(_prop.getProperty("time")), Integer.parseInt(_prop.getProperty("numMines")), Integer.parseInt(_prop.getProperty("gridHeight")), Integer.parseInt(_prop.getProperty("gridWidth")), Integer.parseInt(_prop.getProperty("score")), label);
 
         
         // set up the gamePanel's internal panel structure
@@ -108,6 +108,10 @@ public class GamePanel extends JPanel implements ActionListener {
         timeLabel.setText(time/60 + ":" + String.format("%02d", time%60));
     }
     
+    public GameState getGameState() {
+        return _gs;
+    }
+    
     
     /** Action Listener */
     public void actionPerformed(ActionEvent e) {
@@ -117,10 +121,10 @@ public class GamePanel extends JPanel implements ActionListener {
             JOptionPane.showMessageDialog(null, helpMessage, "Help", JOptionPane.PLAIN_MESSAGE);
         } else if(action == missile){
             // GamePanel.points = GamePanel.points - missile.getPrice();
-            
+            gridPanel.setPowerup(true);
         } else if(action == metalDetector){
             // GamePanel.points = GamePanel.points - missile.getPrice();
-            
+            gridPanel.setPowerup(true);
         } else if(action == extralife){
             // GamePanel.points = GamePanel.points - missile.getPrice();
             
