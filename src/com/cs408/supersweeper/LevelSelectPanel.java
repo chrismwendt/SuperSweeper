@@ -20,6 +20,7 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
    
     public LevelSelectPanel (GameFrame gf) {
         this._gf = gf;
+        //TODO: make it only show the levels that are unlocked
         // Make a new 3x3 GameState for level selection and populate it with appropriate images
         _gs = new GameState(0, 1, 3, 3, 0, null);
         GridUnit[][] grid = _gs.getGrid();

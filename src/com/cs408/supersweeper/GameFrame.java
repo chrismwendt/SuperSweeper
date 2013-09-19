@@ -149,7 +149,6 @@ public class GameFrame implements ActionListener {
         try {
             _prop.store(new FileOutputStream("user_data/userProgress.properties"), null);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } 
     }

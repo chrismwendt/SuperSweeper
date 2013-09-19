@@ -74,6 +74,7 @@ public class GamePanel extends JPanel implements ActionListener {
         help = new JButton("?");
         powerUpPanel.add(help);
         help.addActionListener(this);
+        //TODO: Make all the powerups show up on the screen all the time (some hidden)
         
         this.add(powerUpPanel, BorderLayout.SOUTH);
        
@@ -123,9 +124,11 @@ public class GamePanel extends JPanel implements ActionListener {
             } else if(action == missile && _gs.checkScore(missile.getPrice())){
                 _gs.subtractScore(missile.getPrice());
                 gridPanel.setPowerup(true);
+                //TODO: Implement Missile powerup
             } else if(action == metalDetector && _gs.checkScore(metalDetector.getPrice())){
                 _gs.subtractScore(metalDetector.getPrice());
                 gridPanel.setPowerup(true);
+                //TODO: Implement Metal Detector powerup
             } else if(action == extralife && _gs.checkScore(extralife.getPrice())){
                 _gs.subtractScore(extralife.getPrice());
                 _gs.setExtraLife(true);
