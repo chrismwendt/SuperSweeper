@@ -12,4 +12,4 @@
 12) Various with saving/retrieving loading score, depending upon if you use Exit command or other.
 13) When timer runs out, having it say Congrats, you won -150 points!
 14) If you have exactly the amount of points for a powerup, it won't work.
-15) 
+15) hit Level Select when already at Level Select
