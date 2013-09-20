@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
 
     /** Constructor */
-    public GamePanel(String propFileName, JLabel label) {
+    public GamePanel(int level, String propFileName, JLabel label) {
             
         // Fetch the specified properties file (throws ioexception if its not there)
         try {
@@ -44,7 +44,7 @@ public class GamePanel extends JPanel implements ActionListener {
         Utility.validateProperties(_prop);
         
         // Make a new GameState from the specified properties file
-        _gs = new GameState(Double.parseDouble(_prop.getProperty("time")), Integer.parseInt(_prop.getProperty("numMines")), Integer.parseInt(_prop.getProperty("gridHeight")), Integer.parseInt(_prop.getProperty("gridWidth")), Integer.parseInt(_prop.getProperty("score")), label);
+        _gs = new GameState(level, Double.parseDouble(_prop.getProperty("time")), Integer.parseInt(_prop.getProperty("numMines")), Integer.parseInt(_prop.getProperty("gridHeight")), Integer.parseInt(_prop.getProperty("gridWidth")), Integer.parseInt(_prop.getProperty("score")), label);
 
         
         // set up the gamePanel's internal panel structure

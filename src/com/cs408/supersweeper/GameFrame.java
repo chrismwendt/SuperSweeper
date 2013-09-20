@@ -27,6 +27,7 @@ public class GameFrame implements ActionListener {
     private JMenuItem mntmResetScore;
     private JLabel lblScore;
     private Properties _prop = new Properties();
+    private String propFile;
     private int userScore = 0;
     private LevelSelectPanel lsp;
     private GamePanel gp;
@@ -84,16 +85,17 @@ public class GameFrame implements ActionListener {
         mnOptions.add(mntmRestartLevel);
         mntmRestartLevel.addActionListener(this);
         
-        mntmResetScore = new JMenuItem("Reset Score");
-        mnOptions.add(mntmResetScore);
-        mntmResetScore.addActionListener(this);
+//        mntmResetScore = new JMenuItem("Reset Score");
+//        mnOptions.add(mntmResetScore);
+//        mntmResetScore.addActionListener(this);
 
         mntmExit = new JMenuItem("Exit");
         mnOptions.add(mntmExit);
         
         lblScore = new JLabel();
-        userScore = loadSavedScore();
-        lblScore.setText("Score: " + userScore);
+        //userScore = loadSavedScore();
+        userScore = 0;
+        lblScore.setText("Score: " + userScore + "   ");
         lblScore.setHorizontalAlignment(SwingConstants.RIGHT);
         menuBar.add(lblScore, BorderLayout.EAST);
         mntmExit.addActionListener(this);
@@ -112,15 +114,16 @@ public class GameFrame implements ActionListener {
         if (action == mntmRestartLevel) {
             if(gp != null) {
                 gp.restartLevel();
+                gp.getGameState().setScore(0);
             }
 
         }  else if (action == mntmLevelSelect) {
             gotoLevelSelect();
+            gp.getGameState().setScore(0);
         } else if (action == mntmExit) {
             if (gp != null){
                 getScore();
             }
-            saveScore();
             frame.dispose();
             System.exit(0);
         } else if (action == mntmResetScore) {
@@ -133,25 +136,25 @@ public class GameFrame implements ActionListener {
         }
     }
     
-    public int loadSavedScore() {
-        try {
-            _prop.load(this.getClass().getResourceAsStream("/userProgress.properties"));
-        } catch (Exception e) {
-            System.err.println("Could not locate Properties File: userProgress score");
-            System.exit(1);
-        }  
-        return Integer.parseInt(_prop.getProperty("score"));
-    }
-    
-    public void saveScore() {
-        //TODO: How to save the score when someone exits program another way other than hitting exit option
-        _prop.setProperty("score", Integer.toString(userScore));
-        try {
-            _prop.store(new FileOutputStream("user_data/userProgress.properties"), null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } 
-    }
+//    public int loadSavedScore() {
+//        try {
+//            _prop.load(this.getClass().getResourceAsStream("/userProgress.properties"));
+//        } catch (Exception e) {
+//            System.err.println("Could not locate Properties File: userProgress score");
+//            System.exit(1);
+//        }  
+//        return Integer.parseInt(_prop.getProperty("score"));
+//    }
+//    
+//    public void saveScore() {
+//        //TODO: How to save the score when someone exits program another way other than hitting exit option
+//        _prop.setProperty("score", Integer.toString(userScore));
+//        try {
+//            _prop.store(new FileOutputStream("/" + this.propFile), null);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } 
+//    }
     
     public void getScore() {
         userScore = gp.getGameState().getScore();
@@ -161,11 +164,15 @@ public class GameFrame implements ActionListener {
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
         
+        this.propFile = propertiesFile;
+        
         //Remove levelSelectPanel
         frame.remove(lsp);
         
+        int level = Integer.parseInt(propertiesFile.charAt(2) + "");
+        System.out.println(level);
         //Add appropriate GamePanel
-        gp = new GamePanel(propertiesFile, lblScore);
+        gp = new GamePanel(level, propertiesFile, lblScore);
         frame.getContentPane().add(gp, c);
         
         resizeFrame();

@@ -1,7 +1,10 @@
 package com.cs408.supersweeper;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Properties;
 import javax.swing.JLabel;
 
 public class GameState {
@@ -14,20 +17,22 @@ public class GameState {
     private int _gridHeight;
     private int _scoreBonus;
     private int _score;
+    private int _level;
     private boolean _gameIsOver = false;
     private JLabel scoreLabel;
     private boolean _extralife = false;
 
     /** Constructors */
-    public GameState(double time, int numMines, int gridWidth, int gridHeight, int score, JLabel scorelabel) {
+    public GameState(int level, double time, int numMines, int gridWidth, int gridHeight, int score, JLabel scorelabel) {
         this._time = time;
         this._numMines = numMines;
         this._gridHeight = gridHeight;
         this._gridWidth = gridWidth;
         this._scoreBonus = score;
         this.scoreLabel = scorelabel;
+        this._level = level;
         if(scorelabel != null) {
-            _score = Integer.parseInt(scorelabel.getText().substring(7));
+            _score = Integer.parseInt(scorelabel.getText().trim().substring(7));
         }
 
         _grid = new GridUnit[gridWidth][gridHeight];
@@ -59,13 +64,48 @@ public class GameState {
     public void endGame(int pointsToAdd) {
         _gameIsOver = true;
         
+        saveHighScore();
+        
         if(pointsToAdd <= 0) {
             Utility.infoBox("Boom! You Lost :(", "");
         }
         else {
-            Utility.infoBox("Hooray! You won " + pointsToAdd + " points :D!", "");
             addPoints(pointsToAdd);
+            if(saveHighScore())
+            {
+                Utility.infoBox("New High Score Achieved!", "");
+            }
         }
+    }
+    
+    
+    public boolean saveHighScore() {
+        
+        boolean isHighScore = false;
+        
+        try {  
+            Properties props = new Properties();
+            FileInputStream in = new FileInputStream(this.getClass().getResource("/00" + _level + ".properties").getPath());
+            props.load(in);
+            int score = Integer.parseInt(props.getProperty("score"));
+            System.out.println("Score: " + score + "  Current Score: " + _score);
+            if(_score > score)
+            {
+                System.out.println("Here!");
+                props.setProperty("score", _score + "");
+                isHighScore = true;
+            }
+            in.close();
+            FileOutputStream out = new FileOutputStream(this.getClass().getResource("/00" + _level + ".properties").getPath());
+            props.store(out, null);
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Could not locate Properties File");
+            System.exit(1);
+        }  
+        
+        return isHighScore;
     }
     
     private void addPoints(int pointsToAdd) {
@@ -214,7 +254,7 @@ public class GameState {
     }
     
     public void updateScore(){
-        scoreLabel.setText("Score: " + _score);
+        scoreLabel.setText("Score: " + _score + "   ");
     }
     
     
