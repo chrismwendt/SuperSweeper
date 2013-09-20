@@ -116,7 +116,6 @@ public boolean saveHighScore() {
             System.out.println("Score: " + score + "  Current Score: " + _score);
             if(_score > score)
             {
-                System.out.println("Here!");
                 props.setProperty("score", _score + "");
                 isHighScore = true;
             }

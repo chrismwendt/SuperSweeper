@@ -117,17 +117,21 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
             //Start appropriate game level here
             int x = e.getX() / GridUnit.sample.getWidth();
             int y = e.getY() / GridUnit.sample.getHeight();
-            if(x == 2  && y == 2) {
-                //Bonus Level!!
-                _gf.startLevel("bonus.properties");
+            int level = (x + y*3 + 1);
+            if(_level+1 < level)
+            {
+                Utility.infoBox("You have not completed level " + (_level+1) + " yet!", "");
             }
-            else {
-                int level = (x + y*3 + 1);
-                System.out.println(_level + "   " + level);
-                if(_level+1 >= level)
+            else
+            {
+                if(x == 2  && y == 2) {
+                    //Bonus Level!!
+                    _gf.startLevel("bonus.properties");
+                }
+                else {
+                    System.out.println(_level + "   " + level);
                     _gf.startLevel("00" + level +".properties");
-                else
-                    Utility.infoBox("You have not completed level " + (_level+1) + " yet!", "");
+                }
             }
             
             //Unreachable Code
