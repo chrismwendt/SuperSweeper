@@ -406,12 +406,6 @@ public boolean saveHighScore() {
     }
     
     public void powerUpRelease(GridUnit unit) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
         unit.isChecked = false;
         unit.isPressed = false;
         stateChanged(unit);

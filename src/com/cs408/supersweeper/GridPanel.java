@@ -118,14 +118,8 @@ public class GridPanel extends Panel implements MouseListener, MouseMotionListen
             if(_powerup) {
                 _powerup = false;
                 _gs.powerup(gridUnit);
-                stateRedraw();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-                if(_gs.isMetalDetector()) {
+                
+                if(_gs.isMetalDetector()) {           
                     _gs.powerUpRelease(gridUnit);
                 }
             } else {
@@ -136,7 +130,7 @@ public class GridPanel extends Panel implements MouseListener, MouseMotionListen
             _gs.flagReleased(gridUnit);
         }
 
-        stateRedraw();
+       stateRedraw();
     }
 
     @Override
