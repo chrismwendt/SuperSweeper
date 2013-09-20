@@ -16,6 +16,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 public class GameFrame implements ActionListener {
@@ -24,13 +25,18 @@ public class GameFrame implements ActionListener {
     private JMenuItem mntmRestartLevel;
     private JMenuItem mntmLevelSelect;
     private JMenuItem mntmExit;
-    private JMenuItem mntmResetScore;
+    private JMenuItem mntmHelp;
     private JLabel lblScore;
     private Properties _prop = new Properties();
     private String propFile;
     private int userScore = 0;
     private LevelSelectPanel lsp;
     private GamePanel gp;
+    
+    private static final String helpMessage = "Powerups are a powerful tool for winning SuperSweeper.  Their point value will deduct from your points.\n\n" +
+            "Extra Lives will save you if you click on a mine.\nThe Metal Detector will allow you to see a small part of the board for a second.\n"
+            + "The Missile will destroy a part of the board, safely detonating all mines.";
+
 
 
     /**
@@ -85,6 +91,10 @@ public class GameFrame implements ActionListener {
         mnOptions.add(mntmRestartLevel);
         mntmRestartLevel.addActionListener(this);
         
+        mntmHelp = new JMenuItem("Help");
+        mnOptions.add(mntmHelp);
+        mntmHelp.addActionListener(this);
+        
 //        mntmResetScore = new JMenuItem("Reset Score");
 //        mnOptions.add(mntmResetScore);
 //        mntmResetScore.addActionListener(this);
@@ -126,13 +136,8 @@ public class GameFrame implements ActionListener {
             }
             frame.dispose();
             System.exit(0);
-        } else if (action == mntmResetScore) {
-            if (gp == null){
-                userScore = 0;
-                lblScore.setText("Score: " + userScore);
-            } else {
-                gp.getGameState().setScore(0);
-            }
+        } else if (action == mntmHelp) {
+            JOptionPane.showMessageDialog(null, helpMessage, "Help", JOptionPane.PLAIN_MESSAGE);
         }
     }
     

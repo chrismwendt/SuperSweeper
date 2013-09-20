@@ -71,9 +71,9 @@ public class GamePanel extends JPanel implements ActionListener {
         powerUpPanel.add(missile);
         missile.addActionListener(this);
         
-        help = new JButton("?");
-        powerUpPanel.add(help);
-        help.addActionListener(this);
+//        help = new JButton("?");
+//        powerUpPanel.add(help);
+//        help.addActionListener(this);
         //TODO: Make all the powerups show up on the screen all the time (some hidden)
         
         this.add(powerUpPanel, BorderLayout.SOUTH);
@@ -119,9 +119,7 @@ public class GamePanel extends JPanel implements ActionListener {
         Object action = e.getSource();
         
         if (!_gs.isGameOver()){
-            if(action == help) {
-                JOptionPane.showMessageDialog(null, helpMessage, "Help", JOptionPane.PLAIN_MESSAGE);
-            } else if(action == missile && _gs.checkScore(missile.getPrice())){
+            if(action == missile && _gs.checkScore(missile.getPrice())){
                 _gs.subtractScore(missile.getPrice());
                 gridPanel.setPowerup(true);
                 //TODO: Implement Missile powerup
@@ -150,10 +148,5 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         
     }
-    
-    private static final String helpMessage = "Powerups are a powerful tool for winning SuperSweeper.  Their point value will deduct from your points.\n\n" +
-    "Extra Lives will save you if you click on a mine.\nThe Metal Detector will allow you to see a small part of the board for a second.\n"
-    + "The Missile will destroy a part of the board, safely detonating all mines.";
-
 
 }
