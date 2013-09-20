@@ -101,10 +101,16 @@ public class GameState {
 public boolean saveHighScore() {
         
         boolean isHighScore = false;
+        String file;
+        
+        if(_level == 9)
+            file = "/bonus.properties";
+        else
+            file = "/00" + _level + ".properties";
         
         try {  
             Properties props = new Properties();
-            FileInputStream in = new FileInputStream(this.getClass().getResource("/00" + _level + ".properties").getPath());
+            FileInputStream in = new FileInputStream(this.getClass().getResource(file).getPath());
             props.load(in);
             int score = Integer.parseInt(props.getProperty("score"));
             System.out.println("Score: " + score + "  Current Score: " + _score);
@@ -115,7 +121,7 @@ public boolean saveHighScore() {
                 isHighScore = true;
             }
             in.close();
-            FileOutputStream out = new FileOutputStream(this.getClass().getResource("/00" + _level + ".properties").getPath());
+            FileOutputStream out = new FileOutputStream(this.getClass().getResource(file).getPath());
             props.store(out, null);
             out.close();
         } catch (Exception e) {

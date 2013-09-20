@@ -169,7 +169,11 @@ public class GameFrame implements ActionListener {
         //Remove levelSelectPanel
         frame.remove(lsp);
         
-        int level = Integer.parseInt(propertiesFile.charAt(2) + "");
+        int level;
+        if(propertiesFile.contains("bonus"))
+            level = 9;
+        else
+            level = Integer.parseInt(propertiesFile.charAt(2) + "");
         System.out.println(level);
         //Add appropriate GamePanel
         gp = new GamePanel(level, propertiesFile, lblScore);
