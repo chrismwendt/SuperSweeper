@@ -41,7 +41,7 @@ public class GridPanel extends Panel implements MouseListener, MouseMotionListen
         return _gs.getGridUnit(x, y);
     }
     
-    private void stateRedraw() {
+    public void stateRedraw() {
         repaint();
         ((GamePanel) this.getParent()).updateStatusLabel();
     }
@@ -118,6 +118,16 @@ public class GridPanel extends Panel implements MouseListener, MouseMotionListen
             if(_powerup) {
                 _powerup = false;
                 _gs.powerup(gridUnit);
+                stateRedraw();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                if(_gs.isMetalDetector()) {
+                    _gs.powerUpRelease(gridUnit);
+                }
             } else {
                 _gs.checkReleased(gridUnit);
             }

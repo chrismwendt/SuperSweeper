@@ -372,42 +372,58 @@ public boolean saveHighScore() {
     public void setMetalDetector(boolean b){
         _metaldetector = b;
     }
+    
+    public boolean isMetalDetector() {
+        return this._metaldetector;
+    }
 
     public void powerup(GridUnit unit) {
         unit.isPressed = false;
-        unit.isChecked = true;
+        if(unit.isMined)
+            unit.isFlagged = true;
+        else
+            unit.isChecked = true;
         stateChanged(unit);
         for (GridUnit u : unit.adjacentGridUnits) {
             if(u.isChecked) {
                 u.isPressed = true;
             } else {
-                u.isChecked = true;
+                if(u.isMined)
+                    u.isFlagged = true;
+                else
+                    u.isChecked = true;
                 u.isPressed = false;
             }
             stateChanged(u);
         }
         
+  
+        
+        if(hasWon() && !isGameOver()) {
+            //TODO: game economics
+           endGame(getLevelScoreBonus());
+        }
+    }
     
-        if(_metaldetector) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    public void powerUpRelease(GridUnit unit) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        unit.isChecked = false;
+        unit.isPressed = false;
+        stateChanged(unit);
+        for (GridUnit u : unit.adjacentGridUnits) {
+            if(!u.isPressed) {
+                u.isChecked = false;
             }
-            
-            unit.isChecked = false;
-            unit.isPressed = false;
-            stateChanged(unit);
-            for (GridUnit u : unit.adjacentGridUnits) {
-                if(!u.isPressed) {
-                    u.isChecked = false;
-                }
-                u.isPressed = false;
-                stateChanged(u);
-            }
-            
-            _metaldetector = false;
-        } 
+            u.isPressed = false;
+            stateChanged(u);
+        }
+        
+        _metaldetector = false;
         
         if(hasWon() && !isGameOver()) {
             //TODO: game economics
