@@ -122,11 +122,10 @@ public class GamePanel extends JPanel implements ActionListener {
             if(action == missile && _gs.checkScore(missile.getPrice())){
                 _gs.subtractScore(missile.getPrice());
                 gridPanel.setPowerup(true);
-                //TODO: Implement Missile powerup
             } else if(action == metalDetector && _gs.checkScore(metalDetector.getPrice())){
                 _gs.subtractScore(metalDetector.getPrice());
                 gridPanel.setPowerup(true);
-                //TODO: Implement Metal Detector powerup
+                _gs.setMetalDetector(true);
             } else if(action == extralife && _gs.checkScore(extralife.getPrice())){
                 _gs.subtractScore(extralife.getPrice());
                 _gs.setExtraLife(true);

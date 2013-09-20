@@ -129,7 +129,7 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
                     _gf.startLevel("bonus.properties");
                 }
                 else {
-                    System.out.println(_level + "   " + level);
+                    //System.out.println(_level + "   " + level);
                     _gf.startLevel("00" + level +".properties");
                 }
             }

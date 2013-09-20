@@ -21,6 +21,7 @@ public class GameState {
     private boolean _gameIsOver = false;
     private JLabel scoreLabel;
     private boolean _extralife = false;
+    private boolean _metaldetector = false;
 
     /** Constructors */
     public GameState(int level, double time, int numMines, int gridWidth, int gridHeight, int score, JLabel scorelabel) {
@@ -232,7 +233,7 @@ public boolean saveHighScore() {
     public void checkReleased(GridUnit gu) {
         gu.isPressed = false;
         if (!gu.isFlagged) {
-            if (gu.isMined && !_extralife) {
+            if (gu.isMined && !_extralife && !gu.isChecked) {
                 //subtractScore(_scoreBonus);
                 exposeMines(gu);
                 endGame(0);
@@ -366,5 +367,51 @@ public boolean saveHighScore() {
     
     public void setExtraLife(boolean b){
         _extralife = b;
+    }
+
+    public void setMetalDetector(boolean b){
+        _metaldetector = b;
+    }
+
+    public void powerup(GridUnit unit) {
+        unit.isPressed = false;
+        unit.isChecked = true;
+        stateChanged(unit);
+        for (GridUnit u : unit.adjacentGridUnits) {
+            if(u.isChecked) {
+                u.isPressed = true;
+            } else {
+                u.isChecked = true;
+                u.isPressed = false;
+            }
+            stateChanged(u);
+        }
+        
+    
+        if(_metaldetector) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            
+            unit.isChecked = false;
+            unit.isPressed = false;
+            stateChanged(unit);
+            for (GridUnit u : unit.adjacentGridUnits) {
+                if(!u.isPressed) {
+                    u.isChecked = false;
+                }
+                u.isPressed = false;
+                stateChanged(u);
+            }
+            
+            _metaldetector = false;
+        } 
+        
+        if(hasWon() && !isGameOver()) {
+            //TODO: game economics
+           endGame(getLevelScoreBonus());
+        }
     }
 }

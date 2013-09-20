@@ -115,7 +115,12 @@ public class GridPanel extends Panel implements MouseListener, MouseMotionListen
         }
 
         if (SwingUtilities.isLeftMouseButton(e)) {
-            _gs.checkReleased(gridUnit);
+            if(_powerup) {
+                _powerup = false;
+                _gs.powerup(gridUnit);
+            } else {
+                _gs.checkReleased(gridUnit);
+            }
             _previouslyPressedGridUnit = null;
         } else if (SwingUtilities.isRightMouseButton(e)) {
             _gs.flagReleased(gridUnit);
@@ -160,7 +165,29 @@ public class GridPanel extends Panel implements MouseListener, MouseMotionListen
     }
 
     @Override
-    public void mouseMoved(MouseEvent arg0) {
+    public void mouseMoved(MouseEvent e) {
+        if (_powerup){
+            if (_gs.isGameOver()) {
+                return;
+            }
+    
+            GridUnit gridUnit = getGridUnit(e);
+            if (gridUnit == null) {
+                return;
+            }
+            if(_previouslyPressedGridUnit != null){
+                for (GridUnit unit : _previouslyPressedGridUnit.adjacentGridUnits) {
+                    _gs.checkCancelled(unit);
+                }
+            }
+            for (GridUnit unit : gridUnit.adjacentGridUnits) {
+                _gs.checkPressed(unit);
+            }
+            _gs.checkPressed(gridUnit);
+            _previouslyPressedGridUnit = gridUnit;
+    
+            stateRedraw();
+        }
     }
 
 }
