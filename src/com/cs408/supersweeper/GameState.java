@@ -75,11 +75,30 @@ public class GameState {
             {
                 Utility.infoBox("New High Score Achieved!", "");
             }
+            saveUserProgress();
         }
     }
     
+ public void saveUserProgress()
+ {
+     try {  
+         Properties props = new Properties();
+         FileInputStream in = new FileInputStream(this.getClass().getResource("/userProgress.properties").getPath());
+         props.load(in);
+         props.setProperty("level", _level + "");
+         in.close();
+         FileOutputStream out = new FileOutputStream(this.getClass().getResource("/userProgress.properties").getPath());
+         props.store(out, null);
+         out.close();
+     } catch (Exception e) {
+         e.printStackTrace();
+         System.err.println("Could not locate Properties File");
+         System.exit(1);
+     }  
+ }
     
-    public boolean saveHighScore() {
+    
+public boolean saveHighScore() {
         
         boolean isHighScore = false;
         
@@ -211,7 +230,7 @@ public class GameState {
         gu.isPressed = false;
         if (!gu.isFlagged) {
             if (gu.isMined && !_extralife) {
-                subtractScore(_scoreBonus);
+                //subtractScore(_scoreBonus);
                 exposeMines(gu);
                 endGame(0);
             } else {

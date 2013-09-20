@@ -7,6 +7,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.util.Properties;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -17,6 +19,7 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
     private GameState _gs;
     private GridUnit _previouslyPressedGridUnit = null;
     private BufferedImage _previousImage;
+    private int _level;
    
     public LevelSelectPanel (GameFrame gf) {
         this._gf = gf;
@@ -36,6 +39,18 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
         int h = GridUnit.sample.getHeight();
         setPreferredSize(new Dimension(_gs.getGridWidth() * w, _gs.getGridHeight() * h ));
 
+        // Get the user's current level
+        try {
+            Properties props = new Properties();
+            FileInputStream in = new FileInputStream(this.getClass().getResource("/userProgress.properties").getPath());
+            props.load(in);
+            _level = Integer.parseInt(props.getProperty("level"));
+            in.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
         
         //Add mouse listeners
         addMouseListener(this);
@@ -107,7 +122,12 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
                 _gf.startLevel("bonus.properties");
             }
             else {
-                _gf.startLevel("00" + (x + y*3 + 1) +".properties");
+                int level = (x + y*3 + 1);
+                System.out.println(_level + "   " + level);
+                if(_level+1 >= level)
+                    _gf.startLevel("00" + level +".properties");
+                else
+                    Utility.infoBox("You have not completed level " + (_level+1) + " yet!", "");
             }
             
             //Unreachable Code
