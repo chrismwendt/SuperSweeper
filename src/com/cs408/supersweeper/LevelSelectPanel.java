@@ -118,9 +118,9 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
             int x = e.getX() / GridUnit.sample.getWidth();
             int y = e.getY() / GridUnit.sample.getHeight();
             int level = (x + y*3 + 1);
-            if(_level < level)
+            if(_level+1 < level)
             {
-                Utility.infoBox("You have not completed level " + (_level) + " yet!", "");
+                Utility.infoBox("You have not completed level " + (_level+1) + " yet!", "");
             }
             else
             {
