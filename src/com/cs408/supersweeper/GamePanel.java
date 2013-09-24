@@ -89,7 +89,6 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void restartLevel() {
-        resetTimer();
         _gs.resetGrid();
         gridPanel.resetFirstClick();
         repaint();
