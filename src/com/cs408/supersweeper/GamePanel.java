@@ -161,8 +161,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
+        if (arg0.getSource() == _gs.getScoreLabel())
+        {
+            _gs.getScoreLabel().setText("Scare: 0   ");
+        }
     }
 
     @Override
