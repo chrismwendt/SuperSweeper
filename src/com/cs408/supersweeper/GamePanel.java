@@ -135,12 +135,10 @@ public class GamePanel extends JPanel implements ActionListener {
             if(time == 0){
                 //Game Over
                 timeDelay.stop();
-                timeLabel.setText("0:00");
+                timeLabel.setText("asfl;jkasdf");
                 //TODO: Game Economics
                 _gs.endGame(-_gs.getLevelScoreBonus());
                 
-            } else if(_gs.isGameOver()) {
-                timeDelay.stop();
             } else {
                 timeLabel.setText(time/60 + ":" + String.format("%02d", time%60));
             }
