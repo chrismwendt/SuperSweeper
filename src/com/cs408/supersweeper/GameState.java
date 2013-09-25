@@ -279,6 +279,7 @@ public boolean saveHighScore() {
 
     public void flagReleased(GridUnit gu) {
         if (!gu.isChecked) {
+            GamePanel.time = 120;
             gu.isFlagged = !gu.isFlagged;
         }
 
