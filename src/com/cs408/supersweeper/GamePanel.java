@@ -197,6 +197,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
         if (arg0.getSource() == statusLabel)
         {
             statusLabel.setText("Flags: 0");
+            JOptionPane.showMessageDialog(null, "", "Flag", JOptionPane.PLAIN_MESSAGE);
         }
         
         if (arg0.getSource() == _gs.getScoreLabel())
