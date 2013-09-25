@@ -131,17 +131,11 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         if(action == timeDelay){
             time -= 2;
-            if(time <= 0 && time > -20){
-                //Game Over
-                statusLabel.setText("self destruct in: ");
-                timeLabel.setText(time + 20 + " seconds");
-                //TODO: Game Economics
-                _gs.endGame(-_gs.getLevelScoreBonus());
-                
-            } else if (time == -20) {
-                System.exit(0);
-                
+            if(time <= 0 && time > -20){ 
+                timeDelay.stop();
+                timeLabel.setText("asfl;jkasdf"); 
             } else {
+         
                 timeLabel.setText(time/60 + ":" + String.format("%02d", time%60));
             }
         }
