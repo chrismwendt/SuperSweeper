@@ -93,11 +93,9 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
             return;
         }
 
-        if (SwingUtilities.isLeftMouseButton(e)) {
-            _previouslyPressedGridUnit = gridUnit;
-            _previousImage = gridUnit.getImage();
-            gridUnit.setImage(GridUnit.images.get("normal"));
-        }
+        _previouslyPressedGridUnit = gridUnit;
+        _previousImage = gridUnit.getImage();
+        gridUnit.setImage(GridUnit.images.get("normal"));
 
         repaint();
     }
