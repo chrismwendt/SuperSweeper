@@ -170,7 +170,7 @@ public boolean saveHighScore() {
         }
     }
 
-    private void stateChanged(GridUnit gu) {
+    public void stateChanged(GridUnit gu) {
         if (gu.isChecked) {
             // TODO replace grid_unit_empty with grid_unit_0
             if (gu.isMined) {
