@@ -12,7 +12,7 @@ public class Utility {
     public static BufferedImage imageFromFilename(String filename) {
         BufferedImage image = null;
         try {
-            image = ImageIO.read(new File(filename));
+            image = ImageIO.read(Utility.class.getResource(filename));
         } catch (IOException e) {
             e.printStackTrace();
         }

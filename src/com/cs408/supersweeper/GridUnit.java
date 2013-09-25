@@ -19,16 +19,17 @@ public class GridUnit {
     private BufferedImage image;
     static HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
     public static BufferedImage sample;
+        
 
-    static {
-        GridUnit.images.put("normal", Utility.imageFromFilename("images/grid_unit.png"));
-        GridUnit.images.put("empty", Utility.imageFromFilename("images/grid_unit_empty.png"));
-        GridUnit.images.put("hover", Utility.imageFromFilename("images/grid_unit_hover.png"));
-        GridUnit.images.put("press", Utility.imageFromFilename("images/grid_unit_click.png"));
-        GridUnit.images.put("mine", Utility.imageFromFilename("images/grid_unit_mine.png"));
-        GridUnit.images.put("flag", Utility.imageFromFilename("images/grid_unit_flag.png"));
+    static {        
+        GridUnit.images.put("normal", Utility.imageFromFilename("/grid_unit.png"));
+        GridUnit.images.put("empty", Utility.imageFromFilename("/grid_unit_empty.png"));
+        GridUnit.images.put("hover", Utility.imageFromFilename("/grid_unit_hover.png"));
+        GridUnit.images.put("press", Utility.imageFromFilename("/grid_unit_click.png"));
+        GridUnit.images.put("mine", Utility.imageFromFilename("/grid_unit_mine.png"));
+        GridUnit.images.put("flag", Utility.imageFromFilename("/grid_unit_flag.png"));
         for (int i = 1; i <= 8; i++) {
-            GridUnit.images.put(String.valueOf(i), Utility.imageFromFilename("images/grid_unit_" + i + ".png"));
+            GridUnit.images.put(String.valueOf(i), Utility.imageFromFilename("/grid_unit_" + i + ".png"));
         }
         GridUnit.sample = GridUnit.images.get("normal");
     }
@@ -47,6 +48,7 @@ public class GridUnit {
             }
         }
         return count;
+        
     }
     
     public BufferedImage getImage() {
