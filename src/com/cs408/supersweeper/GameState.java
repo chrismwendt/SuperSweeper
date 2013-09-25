@@ -1,7 +1,9 @@
 package com.cs408.supersweeper;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Properties;
@@ -116,7 +118,7 @@ public boolean saveHighScore() {
         
         try {  
             Properties props = new Properties();
-            FileInputStream in = new FileInputStream(this.getClass().getResource(file).getPath());
+            InputStream in = this.getClass().getResourceAsStream(file);
             props.load(in);
             int score = Integer.parseInt(props.getProperty("score"));
             System.out.println("Score: " + score + "  Current Score: " + _score);
@@ -126,9 +128,9 @@ public boolean saveHighScore() {
                 isHighScore = true;
             }
             in.close();
-            FileOutputStream out = new FileOutputStream(this.getClass().getResource(file).getPath());
-            props.store(out, null);
-            out.close();
+            //FileOutputStream out = new FileOutputStream(new File(this.getClass().getResource(file).toURI()));
+            //props.store(out, null);
+            //out.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Could not locate Properties File");

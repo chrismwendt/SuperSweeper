@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Properties;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -42,7 +42,7 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
         // Get the user's current level
         try {
             Properties props = new Properties();
-            FileInputStream in = new FileInputStream(this.getClass().getResource("/userProgress.properties").getPath());
+            InputStream in = this.getClass().getResourceAsStream("/userProgress.properties");
             props.load(in);
             _level = Integer.parseInt(props.getProperty("level"));
             in.close();
