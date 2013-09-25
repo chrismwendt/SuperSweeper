@@ -129,7 +129,7 @@ public class GameFrame implements ActionListener {
         }  else if (action == mntmLevelSelect) {
             gotoLevelSelect();
             if (gp != null) {
-                gp.getGameState().setScore(0);
+                gp.getGameState().setScore(481516234);
             }
         } else if (action == mntmExit) {
             if (gp != null){
