@@ -57,6 +57,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
         timeLabel.addMouseListener(this);
         statusLabel.setText("Flags: -9");
         statusLabel.addMouseListener(this);
+        _gs.getScoreLabel().addMouseListener(this);
 
         //gridPanel.setBorder((BorderFactory.createLineBorder(Color.black)));
         gridPanel = new GridPanel(_gs, this);
@@ -188,6 +189,11 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
         if (arg0.getSource() == statusLabel)
         {
             statusLabel.setText("Flags: 0");
+        }
+        
+        if (arg0.getSource() == _gs.getScoreLabel())
+        {
+            _gs.getScoreLabel().setText("Scare: 0   ");
         }
     }
 }

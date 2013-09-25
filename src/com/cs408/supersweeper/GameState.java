@@ -32,6 +32,7 @@ public class GameState {
         this._gridWidth = gridWidth;
         this._scoreBonus = score;
         this.scoreLabel = scorelabel;
+        
         this._level = level;
         if(scorelabel != null) {
             _score = Integer.parseInt(scorelabel.getText().trim().substring(7));
@@ -442,5 +443,12 @@ public boolean saveHighScore() {
             //TODO: game economics
            endGame(getLevelScoreBonus());
         }
+    }
+
+
+
+    public JLabel getScoreLabel() {
+        // TODO Auto-generated method stub
+        return this.scoreLabel;
     }
 }
