@@ -66,7 +66,7 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
             return null;
         }
 
-        return _gs.getGridUnit(x, y);
+        return _gs.getGridUnit(++x, y);
     }
     
     @Override
