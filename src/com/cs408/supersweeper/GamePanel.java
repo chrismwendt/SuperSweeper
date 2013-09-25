@@ -71,10 +71,9 @@ public class GamePanel extends JPanel implements ActionListener {
         powerUpPanel.add(missile);
         missile.addActionListener(this);
         
-//        help = new JButton("?");
-//        powerUpPanel.add(help);
-//        help.addActionListener(this);
-        //TODO: Make all the powerups show up on the screen all the time (some hidden)
+        help = new JButton("?");
+        powerUpPanel.add(help);
+        help.addActionListener(this);
         
         this.add(powerUpPanel, BorderLayout.SOUTH);
        
