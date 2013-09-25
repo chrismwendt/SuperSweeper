@@ -15,7 +15,7 @@ public class GridPanel extends Panel implements MouseListener, MouseMotionListen
     public GameState _gs;
     public GamePanel _gp;
     public boolean _firstClick = true;
-    public boolean _powerup = false;
+    public boolean _powerup = true;
     public GridUnit _previouslyPressedGridUnit = null;
     
     /** Constructor */
