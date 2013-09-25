@@ -119,8 +119,7 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
         {
             Utility.infoBox("You have not completed level " + (_level+1) + " yet!", "");
         }
-        else
-        {
+
             if(x == 2  && y == 2) {
                 //Bonus Level!!
                 _gf.startLevel("bonus.properties");
@@ -129,7 +128,6 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
                 //System.out.println(_level + "   " + level);
                 _gf.startLevel("00" + level +".properties");
             }
-        }
         
         //Unreachable Code
         gridUnit.setImage(_previousImage);
