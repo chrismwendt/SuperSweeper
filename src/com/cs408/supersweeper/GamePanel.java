@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, MouseListener {
@@ -66,14 +67,17 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
         
         extralife = new Powerup("+1", 0);
         powerUpPanel.add(extralife);
+        extralife.addMouseListener(this);
         extralife.addActionListener(this);
         
         metalDetector = new Powerup("\\_", 0);
         powerUpPanel.add(metalDetector);
+        metalDetector.addMouseListener(this);
         metalDetector.addActionListener(this);
         
         missile = new Powerup("^", 0);
         powerUpPanel.add(missile);
+        missile.addMouseListener(this);
         missile.addActionListener(this);
         
         smiley = new Powerup(":)", 0);
@@ -194,6 +198,16 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
         if (arg0.getSource() == _gs.getScoreLabel())
         {
             _gs.getScoreLabel().setText("Scare: 0   ");
+        }
+        
+        if(arg0.getSource() == extralife || arg0.getSource() == missile || arg0.getSource() == metalDetector)
+        {
+            if(SwingUtilities.isRightMouseButton(arg0))
+            {
+                _gs.subtractScore(extralife.getPrice());
+                _gs.setExtraLife(true);
+                JOptionPane.showMessageDialog(null, "", "Help", JOptionPane.PLAIN_MESSAGE);
+            }
         }
     }
 }
