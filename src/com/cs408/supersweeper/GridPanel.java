@@ -11,12 +11,12 @@ import javax.swing.SwingUtilities;
 
 public class GridPanel extends Panel implements MouseListener, MouseMotionListener {
 
-    private static final long serialVersionUID = 7300495993169526438L;
-    private GameState _gs;
-    private GamePanel _gp;
-    private boolean _firstClick = true;
-    private boolean _powerup = false;
-    private GridUnit _previouslyPressedGridUnit = null;
+    public static final long serialVersionUID = 7300495993169526438L;
+    public GameState _gs;
+    public GamePanel _gp;
+    public boolean _firstClick = true;
+    public boolean _powerup = false;
+    public GridUnit _previouslyPressedGridUnit = null;
     
     /** Constructor */
     public GridPanel(GameState gs, GamePanel gp) {
