@@ -55,7 +55,6 @@ public class GridUnit {
     }
 
     public void resetUnit() {
-        isMined = false;
         isChecked = false;
         isFlagged = false;
         isPressed = false;
