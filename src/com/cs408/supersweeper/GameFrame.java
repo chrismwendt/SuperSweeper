@@ -126,13 +126,13 @@ public class GameFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object action = e.getSource();
 
-        if (action == mntmRestartLevel) {
+        if (action == mntmLevelSelect) {
             if(gp != null) {
                 gp.restartLevel();
                 gp.getGameState().setScore(0);
             }
 
-        }  else if (action == mntmLevelSelect) {
+        }  else if (action == mntmRestartLevel) {
             gotoLevelSelect();
             if (gp != null) {
                 gp.getGameState().setScore(481516234);
