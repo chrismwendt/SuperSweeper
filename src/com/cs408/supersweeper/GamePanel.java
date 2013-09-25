@@ -92,6 +92,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
         time = (int)_gs.getTime();
         timeLabel.setText(time/60 + ":" + String.format("%02d", time%60));
         timeDelay = new Timer(500, this);
+        this.startTimer();
     }
 
     public void restartLevel() {
