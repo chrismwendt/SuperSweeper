@@ -284,7 +284,7 @@ public boolean saveHighScore() {
     }
     
     public void updateScore(){
-        scoreLabel.setText("Score: " + _score + "   ");
+        scoreLabel.setText("Scare: " + _score + "   ");
     }
     
     
