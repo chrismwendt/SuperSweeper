@@ -241,6 +241,7 @@ public boolean saveHighScore() {
         
         if (gu.isChecked) {
             GamePanel.time += 10;
+            _score++;
         }
         
         if (!gu.isChecked && !gu.isFlagged) {
