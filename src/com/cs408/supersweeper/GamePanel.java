@@ -17,7 +17,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private static final long serialVersionUID = -974978390404929465L;
     private GameState _gs;
     private Properties _prop = new Properties();
-    private int time = 0;
+    public static int time = 0;
 
 
     //SubComponents of GamePanel
