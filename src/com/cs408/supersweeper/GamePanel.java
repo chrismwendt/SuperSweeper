@@ -131,7 +131,8 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         }
         if(action == timeDelay){
-            if(--time == 0){
+            time -= 2;
+            if(time == 0){
                 //Game Over
                 timeDelay.stop();
                 timeLabel.setText("0:00");
