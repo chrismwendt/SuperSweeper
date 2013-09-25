@@ -80,7 +80,7 @@ public class GamePanel extends JPanel implements ActionListener {
         //Set Min Size for this container panel
         int w = GridUnit.sample.getWidth();
         int h = GridUnit.sample.getHeight();
-        setPreferredSize(new Dimension(_gs.getGridWidth() * w, _gs.getGridHeight() * h + ((int) (labelPanel.getPreferredSize().getHeight() -25 + powerUpPanel.getPreferredSize().getHeight())) ));
+        setPreferredSize(new Dimension(_gs.getGridWidth() * w + 20, _gs.getGridHeight() * h + ((int) (labelPanel.getPreferredSize().getHeight() -25 + powerUpPanel.getPreferredSize().getHeight())) ));
 
         time = (int)_gs.getTime();
         timeLabel.setText(time/60 + ":" + String.format("%02d", time%60));
