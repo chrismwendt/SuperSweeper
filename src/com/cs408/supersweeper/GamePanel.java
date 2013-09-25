@@ -67,7 +67,7 @@ public class GamePanel extends JPanel implements ActionListener {
         powerUpPanel.add(metalDetector);
         metalDetector.addActionListener(this);
         
-        missile = new Powerup("^", 200);
+        missile = new Powerup("^", 0);
         powerUpPanel.add(missile);
         missile.addActionListener(this);
         
