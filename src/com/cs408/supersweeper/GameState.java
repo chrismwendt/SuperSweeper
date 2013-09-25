@@ -205,6 +205,10 @@ public boolean saveHighScore() {
     }
 
     private void check(GridUnit gu) {
+        if (gu.isChecked) {
+            return;
+        }
+        
         gu.isChecked = true;
 
         stateChanged(gu);
