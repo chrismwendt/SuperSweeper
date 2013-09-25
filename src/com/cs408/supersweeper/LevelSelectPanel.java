@@ -14,12 +14,12 @@ import javax.swing.SwingUtilities;
 
 public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMotionListener {
     
-    private static final long serialVersionUID = -8348029708739390765L;
-    private GameFrame _gf;
-    private GameState _gs;
-    private GridUnit _previouslyPressedGridUnit = null;
-    private BufferedImage _previousImage;
-    private int _level;
+    public static final long serialVersionUID = -8348029708739390765L;
+    public GameFrame _gf;
+    public GameState _gs;
+    public GridUnit _previouslyPressedGridUnit = null;
+    public BufferedImage _previousImage;
+    public int _level;
    
     public LevelSelectPanel (GameFrame gf) {
         this._gf = gf;
