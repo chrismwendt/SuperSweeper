@@ -11,6 +11,8 @@ public class GridUnit {
     public boolean isPressed = false;
     public boolean isHovered = false;
     public boolean isExposed = false;
+    public boolean isExploded = false;
+    public boolean isResetable = false;
     public ArrayList<GridUnit> adjacentGridUnits = new ArrayList<GridUnit>();
     private BufferedImage image;
     static HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
