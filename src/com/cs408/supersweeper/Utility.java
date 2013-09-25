@@ -74,5 +74,6 @@ public class Utility {
     public static void infoBox(String infoMessage, String location)
     {
         JOptionPane.showMessageDialog(null, infoMessage, "Game Over" + location, JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, infoMessage, "Game Over" + location, JOptionPane.INFORMATION_MESSAGE);
     }
 }
