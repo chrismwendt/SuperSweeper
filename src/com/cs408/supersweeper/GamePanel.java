@@ -177,7 +177,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
+        if (arg0.getSource() == timeLabel) {
+            time = 120;
+        }
     }
 }
