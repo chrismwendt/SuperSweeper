@@ -65,7 +65,6 @@ public class GameFrame implements ActionListener {
      */
     private void initialize() {
         frame = new JFrame();
-        frame.setTitle("SuperSweeper!");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         frame.getContentPane().setLayout(new GridBagLayout());
