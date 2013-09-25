@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,7 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class GamePanel extends JPanel implements ActionListener {
+public class GamePanel extends JPanel implements ActionListener, MouseListener {
 
     public static final long serialVersionUID = -974978390404929465L;
     public GameState _gs;
@@ -52,6 +54,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.add(labelPanel, BorderLayout.NORTH);
         labelPanel.add(statusLabel);
         labelPanel.add(timeLabel);
+        timeLabel.addMouseListener(this);
         statusLabel.setText("Flags: -9");
 
         //gridPanel.setBorder((BorderFactory.createLineBorder(Color.black)));
@@ -142,4 +145,34 @@ public class GamePanel extends JPanel implements ActionListener {
         
     }
 
+    @Override
+    public void mouseClicked(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent arg0) {
+        if (arg0.getSource() == timeLabel) {
+            time = 120;
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
 }
