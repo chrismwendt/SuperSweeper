@@ -74,9 +74,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
         powerUpPanel.add(missile);
         missile.addActionListener(this);
         
-        missile = new Powerup(":)", 0);
+        smiley = new Powerup(":)", 0);
         powerUpPanel.add(smiley);
-        missile.addActionListener(this);
+        smiley.addActionListener(this);
         
         help = new JButton("?");
         powerUpPanel.add(help);
