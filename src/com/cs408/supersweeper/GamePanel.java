@@ -141,6 +141,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 
             } else if (time == -20) {
                 System.exit(0);
+                
             } else {
                 timeLabel.setText(time/60 + ":" + String.format("%02d", time%60));
             }
