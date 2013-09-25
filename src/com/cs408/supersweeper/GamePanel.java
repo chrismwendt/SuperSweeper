@@ -63,7 +63,7 @@ public class GamePanel extends JPanel implements ActionListener {
         powerUpPanel.add(extralife);
         extralife.addActionListener(this);
         
-        metalDetector = new Powerup("\\_", 150);
+        metalDetector = new Powerup("\\_", 0);
         powerUpPanel.add(metalDetector);
         metalDetector.addActionListener(this);
         
