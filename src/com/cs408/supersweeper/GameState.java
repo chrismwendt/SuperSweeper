@@ -236,20 +236,18 @@ public boolean saveHighScore() {
 
     public void checkReleased(GridUnit gu) {
         gu.isPressed = false;
-        if (!gu.isFlagged) {
-            if (gu.isMined && !_extralife && !gu.isChecked) {
-                //subtractScore(_scoreBonus);
-                exposeMines(gu);
-                endGame(0);
+        if (gu.isMined && !_extralife && !gu.isChecked) {
+            //subtractScore(_scoreBonus);
+            exposeMines(gu);
+            endGame(0);
+        } else {
+            if (_extralife && gu.isMined) {
+                gu.isChecked = true;
+                stateChanged(gu);
             } else {
-                if (_extralife && gu.isMined) {
-                    gu.isChecked = true;
-                    stateChanged(gu);
-                } else {
-                    check(gu);
-                }
-                _extralife = false;
+                check(gu);
             }
+            _extralife = false;
         }
 
         stateChanged(gu);
