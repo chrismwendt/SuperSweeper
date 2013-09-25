@@ -65,7 +65,7 @@ public class GameFrame implements ActionListener {
      */
     private void initialize() {
         frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         
         frame.getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
