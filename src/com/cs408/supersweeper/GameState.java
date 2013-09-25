@@ -286,9 +286,6 @@ public boolean saveHighScore() {
     
     public void subtractScore(int sub) {
         _score -= sub;
-        if(_score <= 0){
-            _score = 0;
-        }
         
         updateScore();
     }
