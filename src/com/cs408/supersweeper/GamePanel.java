@@ -59,7 +59,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.add(gridPanel, BorderLayout.CENTER);
         powerUpPanel.setLayout(new FlowLayout());
         
-        extralife = new Powerup("+1", 100);
+        extralife = new Powerup("+1", 0);
         powerUpPanel.add(extralife);
         extralife.addActionListener(this);
         
