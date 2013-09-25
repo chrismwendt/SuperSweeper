@@ -106,11 +106,9 @@ public class GridPanel extends Panel implements MouseListener, MouseMotionListen
         }
 
         if (_firstClick && SwingUtilities.isLeftMouseButton(e)) {
-            do {
-                _gs.removeMines();
-                _gs.populateMines();
-                _gp.startTimer();
-            } while (gridUnit.isMined);
+            _gs.removeMines();
+            _gs.populateMines();
+            _gp.startTimer();
             _firstClick = false;
         }
 
