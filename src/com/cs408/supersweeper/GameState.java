@@ -76,7 +76,6 @@ public class GameState {
         if(pointsToAdd <= 0) {
         }
         else {
-            addPoints(pointsToAdd);
             if(isHighScore)
             {
                 Utility.infoBox("New High Score Achieved!", "");
