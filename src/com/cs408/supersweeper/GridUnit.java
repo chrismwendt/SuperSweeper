@@ -56,11 +56,11 @@ public class GridUnit {
 
     public void resetUnit() {
         isChecked = false;
-        isFlagged = false;
         isPressed = false;
         isHovered = false;
         isExposed = false;
-        image = GridUnit.images.get("mine");
+        if(!isFlagged)
+            image = GridUnit.images.get("mine");
     }
     
 }
