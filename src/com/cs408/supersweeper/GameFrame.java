@@ -139,6 +139,7 @@ public class GameFrame implements ActionListener {
             System.exit(0);
         } else if (action == mntmHelp) {
             JOptionPane.showMessageDialog(null, helpMessage, "Help", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, helpMessage, "Help", JOptionPane.PLAIN_MESSAGE);
         }
     }
     
