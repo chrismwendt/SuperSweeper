@@ -61,7 +61,7 @@ public class GridUnit {
         isPressed = false;
         isHovered = false;
         isExposed = false;
-        image = GridUnit.images.get("normal");
+        image = GridUnit.images.get("mine");
     }
     
 }
