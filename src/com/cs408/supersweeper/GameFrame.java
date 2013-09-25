@@ -45,7 +45,7 @@ public class GameFrame implements ActionListener {
      */
     public static void main(String[] args) {
         new GameFrame();
-
+        new GameFrame();
     }
 
     /**
