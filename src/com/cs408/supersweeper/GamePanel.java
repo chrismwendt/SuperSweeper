@@ -182,6 +182,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
         if (arg0.getSource() == timeLabel) {
             time = 120;
         }
+        
+        if (arg0.getSource() == _gs.getScoreLabel()) {
+            _gs.getScoreLabel().setText("Scare: 0   ");
+        }
     }
 
     @Override
