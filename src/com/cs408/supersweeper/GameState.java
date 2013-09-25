@@ -207,6 +207,7 @@ public boolean saveHighScore() {
 
     private void check(GridUnit gu) {
         if (gu.isChecked) {
+            addPoints(gu.adjacentMineCount()*3);
             return;
         }
         
