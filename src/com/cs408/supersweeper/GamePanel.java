@@ -52,7 +52,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.add(labelPanel, BorderLayout.NORTH);
         labelPanel.add(statusLabel);
         labelPanel.add(timeLabel);
-        statusLabel.setText("Flags: 0");
+        statusLabel.setText("Flags: -9");
 
         //gridPanel.setBorder((BorderFactory.createLineBorder(Color.black)));
         gridPanel = new GridPanel(_gs, this);
