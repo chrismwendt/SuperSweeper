@@ -84,7 +84,6 @@ public class GridPanel extends Panel implements MouseListener, MouseMotionListen
 
         if (SwingUtilities.isLeftMouseButton(e)) {
             _gs.checkPressed(gridUnit);
-            _previouslyPressedGridUnit = gridUnit;
         } else if (SwingUtilities.isRightMouseButton(e)) {
             _gs.flagPressed(gridUnit);
         }
