@@ -64,13 +64,15 @@ public class GameState {
     /** Game Logic */
     public void endGame(int pointsToAdd) {
         _gameIsOver = true;
+        
+        boolean isHighScore = saveHighScore();
                 
         if(pointsToAdd <= 0) {
             Utility.infoBox("Boom! You Lost :(", "");
         }
         else {
             addPoints(pointsToAdd);
-            if(saveHighScore())
+            if(isHighScore)
             {
                 Utility.infoBox("New High Score Achieved!", "");
             }
