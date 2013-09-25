@@ -341,7 +341,7 @@ public boolean saveHighScore() {
                 }
             }
         }
-        return count;
+        return 2*count;
     }
     
     public boolean isValidGridUnit(int x, int y) {
