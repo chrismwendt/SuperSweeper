@@ -120,14 +120,14 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
             Utility.infoBox("You have not completed level " + (_level+1) + " yet!", "");
         }
 
-            if(x == 2  && y == 2) {
-                //Bonus Level!!
-                _gf.startLevel("bonus.properties");
-            }
-            else {
-                //System.out.println(_level + "   " + level);
-                _gf.startLevel("00" + level +".properties");
-            }
+        if(x == 2  && y == 2) {
+            //Bonus Level!!
+            _gf.startLevel("bonus.properties");
+        }
+        else {
+            //System.out.println(_level + "   " + level);
+            _gf.startLevel("00" + level +".properties");
+        }
         
         //Unreachable Code
         gridUnit.setImage(_previousImage);
@@ -151,7 +151,7 @@ public class LevelSelectPanel  extends JPanel implements MouseListener, MouseMot
             _previouslyPressedGridUnit.setImage(_previousImage);
             _previouslyPressedGridUnit = gridUnit;
             _previousImage = gridUnit.getImage();
-            gridUnit.setImage(GridUnit.images.get("normal"));
+            gridUnit.setImage(GridUnit.images.get("flag"));
         }
 
         repaint();
