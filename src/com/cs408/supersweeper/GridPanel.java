@@ -122,8 +122,13 @@ public class GridPanel extends Panel implements MouseListener, MouseMotionListen
             } else {
                 if(!gridUnit.isChecked)
                     _gs.checkReleased(gridUnit);
-                else
+                else {
+                    if (gridUnit.isChecked) {
+                        _gs._score++;
+                        _gs.stateChanged(gridUnit);
+                    }
                     gridUnit.setImage(GridUnit.images.get("normal"));
+                }
             }
             _previouslyPressedGridUnit = null;
         } else if (SwingUtilities.isRightMouseButton(e)) {
