@@ -10,18 +10,18 @@ import javax.swing.JLabel;
 public class GameState {
 
     /** Global Variables */
-    private GridUnit[][] _grid;
-    private double _time;
-    private int _numMines;
-    private int _gridWidth;
-    private int _gridHeight;
-    private int _scoreBonus;
-    private int _score;
-    private int _level;
-    private boolean _gameIsOver = false;
-    private JLabel scoreLabel;
-    private boolean _extralife = false;
-    private boolean _metaldetector = false;
+    public GridUnit[][] _grid;
+    public double _time;
+    public int _numMines;
+    public int _gridWidth;
+    public int _gridHeight;
+    public int _scoreBonus;
+    public int _score;
+    public int _level;
+    public boolean _gameIsOver = false;
+    public JLabel scoreLabel;
+    public boolean _extralife = false;
+    public boolean _metaldetector = false;
 
     /** Constructors */
     public GameState(int level, double time, int numMines, int gridWidth, int gridHeight, int score, JLabel scorelabel) {
