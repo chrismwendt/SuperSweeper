@@ -229,6 +229,14 @@ public boolean saveHighScore() {
     }
 
     public void checkPressed(GridUnit gu) {
+        if (gu.isFlagged) {
+            GamePanel.time += 10;
+        }
+        
+        if (gu.isChecked) {
+            GamePanel.time += 10;
+        }
+        
         if (!gu.isChecked && !gu.isFlagged) {
             gu.isPressed = true;
         }
