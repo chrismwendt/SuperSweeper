@@ -35,6 +35,8 @@ public class GameFrame implements ActionListener {
     private static final String helpMessage = "Powerups are a powerful tool for winning SuperSweeper.  Their point value will deduct from your points.\n\n" +
             "Extra Lives will save you if you click on a mine.\nThe Metal Detector will allow you to see a small part of the board for a second.\n"
             + "The Missile will destroy a part of the board, safely detonating all mines.";
+    private JMenuItem mntmSwitchUsers;
+    private JMenuItem mntmFacebookConnect;
 
 
 
@@ -100,6 +102,12 @@ public class GameFrame implements ActionListener {
 
         mntmExit = new JMenuItem("Exit");
         mnOptions.add(mntmExit);
+        
+        mntmSwitchUsers = new JMenuItem("Switch Users");
+        mnOptions.add(mntmSwitchUsers);
+        
+        mntmFacebookConnect = new JMenuItem("Facebook connect");
+        mnOptions.add(mntmFacebookConnect);
         
         lblScore = new JLabel();
         //userScore = loadSavedScore();
