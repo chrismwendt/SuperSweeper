@@ -208,7 +208,6 @@ public boolean saveHighScore() {
 
     private void check(GridUnit gu) {
         if (gu.isChecked) {
-            addPoints(1);
             return;
         }
         
