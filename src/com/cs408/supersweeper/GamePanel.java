@@ -14,21 +14,21 @@ import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener {
 
-    private static final long serialVersionUID = -974978390404929465L;
-    private GameState _gs;
-    private Properties _prop = new Properties();
+    public static final long serialVersionUID = -974978390404929465L;
+    public GameState _gs;
+    public Properties _prop = new Properties();
     public static int time = 0;
 
 
     //SubComponents of GamePanel
-    private GridPanel gridPanel;
-    private JPanel labelPanel = new JPanel();
-    private JPanel powerUpPanel = new JPanel();
-    private JLabel statusLabel = new JLabel();
-    private JLabel timeLabel = new JLabel();
-    private Timer timeDelay;
-    private Powerup missile, extralife, metalDetector;
-    private JButton help;
+    public GridPanel gridPanel;
+    public JPanel labelPanel = new JPanel();
+    public JPanel powerUpPanel = new JPanel();
+    public JLabel statusLabel = new JLabel();
+    public JLabel timeLabel = new JLabel();
+    public Timer timeDelay;
+    public Powerup missile, extralife, metalDetector;
+    public JButton help;
 
 
     /** Constructor */
