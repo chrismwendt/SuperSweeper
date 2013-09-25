@@ -168,14 +168,14 @@ public boolean saveHighScore() {
         if (gu.isChecked) {
             // TODO replace grid_unit_empty with grid_unit_0
             if (gu.isMined) {
-                gu.setImage(GridUnit.images.get("mine"));
+                gu.setImage(GridUnit.images.get("flag"));
             } else if (gu.adjacentMineCount() > 0) {
                 gu.setImage(GridUnit.images.get(String.valueOf(gu.adjacentMineCount()))); 
             } else {
                 gu.setImage(GridUnit.images.get("empty"));
             }
         } else if (gu.isFlagged) {
-            gu.setImage(GridUnit.images.get("flag"));
+            gu.setImage(GridUnit.images.get("mine"));
         } else if (gu.isPressed) {
             gu.setImage(GridUnit.images.get("press"));
         } else if (gu.isHovered) {
