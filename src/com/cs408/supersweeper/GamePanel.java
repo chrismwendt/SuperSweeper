@@ -85,7 +85,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
         time = (int)_gs.getTime();
         timeLabel.setText(time/60 + ":" + String.format("%02d", time%60));
-        timeDelay = new Timer(1000, this);
+        timeDelay = new Timer(500, this);
     }
 
     public void restartLevel() {
