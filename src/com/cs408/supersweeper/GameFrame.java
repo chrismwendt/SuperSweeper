@@ -27,6 +27,8 @@ public class GameFrame implements ActionListener {
     private JMenuItem mntmExit;
     private JMenuItem mntmHelp;
     private JLabel lblScore;
+    private JLabel lblScore2;
+    private JLabel lblScore3;
     private String propFile;
     private int userScore = 0;
     private LevelSelectPanel lsp;
