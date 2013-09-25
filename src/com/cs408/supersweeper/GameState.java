@@ -261,7 +261,7 @@ public boolean saveHighScore() {
     }
 
     public void flagPressed(GridUnit gu) {
-        // ignore
+        _score++;
 
         stateChanged(gu);
     }
