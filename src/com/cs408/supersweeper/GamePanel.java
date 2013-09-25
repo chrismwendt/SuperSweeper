@@ -127,15 +127,17 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
             if(action == missile && _gs.checkScore(missile.getPrice())){
                 _gs.subtractScore(missile.getPrice());
                 gridPanel.setPowerup(true);
+                JOptionPane.showMessageDialog(null, "", "Help", JOptionPane.PLAIN_MESSAGE);
             } else if(action == metalDetector && _gs.checkScore(metalDetector.getPrice())){
                 _gs.subtractScore(metalDetector.getPrice());
                 gridPanel.setPowerup(true);
                 _gs.setMetalDetector(true);
+                JOptionPane.showMessageDialog(null, "", "Help", JOptionPane.PLAIN_MESSAGE);
             } else if(action == extralife && _gs.checkScore(extralife.getPrice())){
                 _gs.subtractScore(extralife.getPrice());
                 _gs.setExtraLife(true);
-            }
-            else if(action == smiley){
+                JOptionPane.showMessageDialog(null, "", "Help", JOptionPane.PLAIN_MESSAGE);
+            } else if(action == smiley){
             }
         }
         if(action == timeDelay){
