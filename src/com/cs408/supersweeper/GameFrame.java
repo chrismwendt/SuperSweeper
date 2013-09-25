@@ -200,7 +200,7 @@ public class GameFrame implements ActionListener {
         c.gridy = 0;
         
         //Remove gamePanel
-        frame.remove(gp);
+        //frame.remove(gp);
         
         //Add new LevelSelectPanel
         frame.getContentPane().add(lsp, c); 
