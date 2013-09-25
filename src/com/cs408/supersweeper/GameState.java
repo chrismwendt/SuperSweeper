@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Properties;
+import java.util.Random;
 import javax.swing.JLabel;
 
 public class GameState {
@@ -38,10 +39,15 @@ public class GameState {
 
         _grid = new GridUnit[gridWidth][gridHeight];
 
+        Random r = new Random();
         // initialize the grid
         for (int x = 0; x < gridWidth; x++) {
             for (int y = 0; y < gridHeight; y++) {
                 _grid[x][y] = new GridUnit();
+                if(r.nextInt(25) == 1) {
+                    _grid[x][y].setImage(GridUnit.images.get("flag"));
+                    _grid[x][y].isFlagged = true;
+                }
             }
         }
 
