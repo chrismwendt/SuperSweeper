@@ -288,6 +288,8 @@ public boolean saveHighScore() {
         if (!gu.isChecked) {
             GamePanel.time = 120;
             gu.isFlagged = !gu.isFlagged;
+        } else {
+            _score++;
         }
 
         stateChanged(gu);

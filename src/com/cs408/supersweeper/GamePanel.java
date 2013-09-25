@@ -92,7 +92,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
         setPreferredSize(new Dimension(_gs.getGridWidth() * w + 20, _gs.getGridHeight() * h + ((int) (labelPanel.getPreferredSize().getHeight() -25 + powerUpPanel.getPreferredSize().getHeight())) ));
 
         time = (int)_gs.getTime();
-        timeLabel.setText(time/60 + ":" + String.format("%02d", time%60));
+        timeLabel.setText("00" + time/60 + ":" + String.format("%02d", time%60));
         timeDelay = new Timer(500, this);
         this.startTimer();
     }
