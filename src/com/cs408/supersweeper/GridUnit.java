@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GridUnit {
+
+
     public boolean isMined = false;
     public boolean isChecked = false;
     public boolean isFlagged = false;
@@ -65,4 +67,67 @@ public class GridUnit {
             image = GridUnit.images.get("mine");
     }
     
+    public boolean isMined() {
+        return isMined;
+    }
+
+    public void setMined(boolean isMined) {
+        this.isMined = isMined;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean isChecked) {
+        this.isChecked = isChecked;
+    }
+
+    public boolean isFlagged() {
+        return isFlagged;
+    }
+
+    public void setFlagged(boolean isFlagged) {
+        this.isFlagged = isFlagged;
+    }
+
+    public boolean isPressed() {
+        return isPressed;
+    }
+
+    public void setPressed(boolean isPressed) {
+        this.isPressed = isPressed;
+    }
+
+    public boolean isHovered() {
+        return isHovered;
+    }
+
+    public void setHovered(boolean isHovered) {
+        this.isHovered = isHovered;
+    }
+
+    public boolean isExposed() {
+        return isExposed;
+    }
+
+    public void setExposed(boolean isExposed) {
+        this.isExposed = isExposed;
+    }
+
+    public boolean isExploded() {
+        return isExploded;
+    }
+
+    public void setExploded(boolean isExploded) {
+        this.isExploded = isExploded;
+    }
+
+    public boolean isResetable() {
+        return isResetable;
+    }
+
+    public void setResetable(boolean isResetable) {
+        this.isResetable = isResetable;
+    }
 }
