@@ -220,7 +220,7 @@ public boolean saveHighScore() {
         }
 
         for (GridUnit unit : gu.adjacentGridUnits) {
-            if (!unit.isChecked && !unit.isFlagged) {
+            if (!unit.isChecked) {
                 check(unit);
             }
         }
