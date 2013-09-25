@@ -75,8 +75,6 @@ public class GameState {
             if(isHighScore)
             {
                 Utility.infoBox("New High Score Achieved!", "");
-            } else {
-                Utility.infoBox("You are an excellent minesweeper!", "");
             }
             saveUserProgress();
         }
