@@ -261,6 +261,9 @@ public boolean saveHighScore() {
     }
 
     public void flagPressed(GridUnit gu) {
+        if (gu.isChecked) {
+            GamePanel.time++;
+        }
         _score++;
 
         stateChanged(gu);
