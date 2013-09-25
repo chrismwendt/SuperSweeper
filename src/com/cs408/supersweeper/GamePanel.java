@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
     public JLabel statusLabel = new JLabel();
     public JLabel timeLabel = new JLabel();
     public Timer timeDelay;
-    public Powerup missile, extralife, metalDetector;
+    public Powerup missile, extralife, metalDetector, smiley;
     public JButton help;
 
 
@@ -72,6 +72,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
         
         missile = new Powerup("^", 0);
         powerUpPanel.add(missile);
+        missile.addActionListener(this);
+        
+        missile = new Powerup(":)", 0);
+        powerUpPanel.add(smiley);
         missile.addActionListener(this);
         
         help = new JButton("?");
@@ -129,6 +133,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
             } else if(action == extralife && _gs.checkScore(extralife.getPrice())){
                 _gs.subtractScore(extralife.getPrice());
                 _gs.setExtraLife(true);
+            }
+            else if(action == smiley){
             }
         }
         if(action == timeDelay){
